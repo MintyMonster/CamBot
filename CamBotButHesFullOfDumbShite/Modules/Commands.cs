@@ -26,6 +26,8 @@ using CamBotButHesFullOfDumbShite.MarsRoverImages;
 using CamBotButHesFullOfDumbShite.UrbanDictionary;
 using CamBotButHesFullOfDumbShite.NumbersApi;
 using CamBotButHesFullOfDumbShite.OpenWeatherMap;
+using Microsoft.Extensions.Configuration;
+using CamBotButHesFullOfDumbShite.Coins;
 
 namespace CamBotButHesFullOfDumbShite.Modules
 {
@@ -35,16 +37,12 @@ namespace CamBotButHesFullOfDumbShite.Modules
         private DiscordSocketClient _client;
         private readonly CommandService _commands;
         private readonly IServiceProvider _services;
-
-        //keys
-        private static string NasaKey = "4ZkKJ36jZhOQcOr5ZYPaOkMX7oLmQ3HW9X9jBk0L";
-        private static string OWMKey = "63ac3e2e1c5fee8c30504c2fca40bb3c";
-        private static string RapidAPIKey = "8f9bc3c51bmshefef4896fc3f94ap11e8bajsn3117a2fa356f";
-        private static string ApodKey = "4ZkKJ36jZhOQcOr5ZYPaOkMX7oLmQ3HW9X9jBk0L";
+        private readonly IConfiguration _config;
 
         public Commands(IServiceProvider services)
         {
             _commands = services.GetRequiredService<CommandService>();
+            _config = services.GetRequiredService<IConfiguration>();
             var client = services.GetRequiredService<DiscordSocketClient>();
             _services = services;
             _client = client;
@@ -211,7 +209,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
         [Command("APOD")]
         [Alias("apod")]
-        public async Task APOD([Remainder]string query)
+        public async Task APOD([Remainder] string query = null)
         {
             var user = Context.User.Username;
             var embed = new EmbedBuilder();
@@ -222,7 +220,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var month = rnd.Next(1, 13);
             var day = rnd.Next(1, 29);
             var date = new DateTime();
-            var apodClient = new ApodClient(ApodKey);
+            var apodClient = new ApodClient(_config["ApodKey"]);
 
             if (!string.IsNullOrEmpty(query))
             {
@@ -247,6 +245,46 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
                 
 
+
+                var response = await apodClient.FetchApodAsync(date);
+
+                if (response.StatusCode != ApodStatusCode.OK)
+                {
+                    Console.WriteLine(response.Error.ErrorMessage);
+                    Console.WriteLine(response.Error.ErrorCode);
+                    apodClient.Dispose();
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine($"{user} - $apod -> {response.Content.ContentUrlHD}");
+                }
+
+                sb.AppendLine($"*{response.Content.Date}*");
+                sb.AppendLine();
+                sb.AppendLine(response.Content.Explanation);
+                sb.AppendLine();
+                sb.AppendLine($"({response.Content.ContentUrlHD})");
+
+                embed.Title = response.Content.Title;
+                embed.Description = sb.ToString();
+                embed.ImageUrl = response.Content.ContentUrlHD;
+                embed.Color = new Color(153, 50, 204);
+            }
+            else
+            {
+                if (year == 2021)
+                {
+                    var currentYear = DateTime.Now.Year;
+                    var currentMonth = DateTime.Now.Month;
+                    var currentDay = DateTime.Now.Day;
+
+                    date = new DateTime(currentYear, rnd.Next(1, (int)currentMonth), rnd.Next(1, (int)currentDay));
+                }
+                else
+                {
+                    date = new DateTime(year, month, day);
+                }
 
                 var response = await apodClient.FetchApodAsync(date);
 
@@ -408,7 +446,8 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var sol = rnd.Next(1, addSols);
             var image = string.Empty;
             var page = rnd.Next(1, 3);
-            string url = $"https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol={sol}&page={page}&api_key={NasaKey}";
+            var key = _config["NasaKey"];
+            string url = $"https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol={sol}&page={page}&api_key={key}";
 
             using (HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
             {
@@ -456,7 +495,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 RequestUri = new Uri($"https://mashape-community-urban-dictionary.p.rapidapi.com/define?term={query}"),
                 Headers =
                 {
-                    { "x-rapidapi-key", $"{RapidAPIKey}" },
+                    { "x-rapidapi-key", $"{_config["RapidApiKey"]}" },
                     { "x-rapidapi-host", "mashape-community-urban-dictionary.p.rapidapi.com" },
                 },
             };
@@ -508,7 +547,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 RequestUri = new Uri($"{url}"),
                 Headers =
                 {
-                    { "x-rapidapi-key", $"{RapidAPIKey}" },
+                    { "x-rapidapi-key", $"{_config["RapidApiKey"]}" },
                     { "x-rapidapi-host", "numbersapi.p.rapidapi.com" },
                 },
             };
@@ -560,7 +599,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 RequestUri = new Uri(url),
                 Headers =
                 {
-                    { "x-rapidapi-key", $"{RapidAPIKey}" },
+                    { "x-rapidapi-key", $"{_config["RapidApiKey"]}" },
                     { "x-rapidapi-host", "numbersapi.p.rapidapi.com" },
                 },
             };
@@ -611,17 +650,17 @@ namespace CamBotButHesFullOfDumbShite.Modules
         }
 
         [Command("weather")]
-        [Alias("forecast")]
         public async Task getWeatherInCountry([Remainder]string query = null)
         {
             var sb = new StringBuilder();
             var sbTitle = new StringBuilder();
             var embed = new EmbedBuilder();
             var user = Context.User;
+            var key = _config["OWMKey"];
 
             if (!string.IsNullOrEmpty(query))
             {
-                string url = $"http://api.openweathermap.org/data/2.5/weather?q={query}&units=metric&appid={OWMKey}";
+                string url = $"http://api.openweathermap.org/data/2.5/weather?q={query}&units=metric&appid={key}";
 
                 using (HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
                 {
