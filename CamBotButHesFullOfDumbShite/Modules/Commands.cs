@@ -28,6 +28,11 @@ using CamBotButHesFullOfDumbShite.NumbersApi;
 using CamBotButHesFullOfDumbShite.OpenWeatherMap;
 using Microsoft.Extensions.Configuration;
 using CamBotButHesFullOfDumbShite.Coins;
+using CamBotButHesFullOfDumbShite.Wordnik;
+using CamBotButHesFullOfDumbShite.CatsApi;
+using CamBotButHesFullOfDumbShite.FoxApi;
+using CamBotButHesFullOfDumbShite.DogApi;
+using CamBotButHesFullOfDumbShite.CocktailApi;
 
 namespace CamBotButHesFullOfDumbShite.Modules
 {
@@ -180,6 +185,10 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine("-**$yearfact {optional: number}** -> Get a fact from a year!\n");
             sb.AppendLine("-**$mathfact {optional: number}** -> Get a random math fact!\n");
             sb.AppendLine("-**$weather {city name}** -> Get the weather for your city!\n");
+            sb.AppendLine("-**$cat** -> Gives you a random cuddly kitten!\n");
+            sb.AppendLine("-**$fox** -> Enjoy a fluffy fox!\n");
+            sb.AppendLine("-**$dog** -> Doggies for everyone!\n");
+            sb.AppendLine("-**$cocktail** -> Get a random cocktail recipe!\n");
 
             var embed = new EmbedBuilder()
             {
@@ -419,6 +428,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
         {
             var sb = new StringBuilder();
             var embed = new EmbedBuilder();
+            var user = Context.User;    
 
             var position = await GetLongLatISS();
 
@@ -431,6 +441,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Description = sb.ToString();
 
             await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $ISS");
         }
 
         [Command("Mars")]
@@ -447,6 +458,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var image = string.Empty;
             var page = rnd.Next(1, 3);
             var key = _config["NasaKey"];
+            var user = Context.User;
             string url = $"https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol={sol}&page={page}&api_key={key}";
 
             using (HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
@@ -479,6 +491,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             };
 
             await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $mars");
         }
 
         [Command("UBdefine")]
@@ -518,6 +531,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(0, 0, 128);
 
             await ReplyAsync(user.Mention, false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $ubdefine");
         }
 
         [Command("yearfact")]
@@ -568,6 +582,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(255, 255, 0);
 
             await ReplyAsync(user.Mention, false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $yearfact");
         }
 
         [Command("mathfact")]
@@ -646,7 +661,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(255, 255, 0);
 
             await ReplyAsync(user.Mention, false, embed.Build());
-            Console.WriteLine($"{user} -> $mathfact");
+            Console.WriteLine($"{user} => $mathfact");
         }
 
         [Command("weather")]
@@ -679,7 +694,9 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     }
                     else
                     {
-                        throw new Exception(response.ReasonPhrase);
+                        sbTitle.AppendLine("Uh oh...");
+                        sb.AppendLine("Something went wrong...");
+                        throw new Exception(response.ReasonPhrase); 
                     }
                 }
             }
@@ -695,6 +712,170 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(135, 206, 235);
 
             await ReplyAsync(user.Mention, false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $weather");
+        }
+
+        [Command("cat")]
+        [Alias("cats")]
+        public async Task getCatPicturesAsync()
+        {
+            var sb = new StringBuilder();
+            var embed = new EmbedBuilder();
+            var user = Context.User;
+            var caturl = string.Empty;
+            var rnd = new Random();
+            var r = rnd.Next(0, 256);
+            var g = rnd.Next(0, 256);
+            var b = rnd.Next(0, 256);
+
+            string url = "https://aws.random.cat/meow?ref=apilist.fun";
+
+            using (HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    CatsRoot cats = JsonConvert.DeserializeObject<CatsRoot>(await response.Content.ReadAsStringAsync());
+                    caturl = $"{cats.file}";
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+            embed.ImageUrl = caturl;
+            embed.Color = new Color(r, g, b);
+
+            await ReplyAsync($"{user.Mention} wants to see cuteness!", false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $cat");
+        }
+
+        [Command("fox")]
+        [Alias("foxes")]
+        public async Task getFoxPicturesAsync()
+        {
+            var embed = new EmbedBuilder();
+            var user = Context.User;
+            var foxurl = string.Empty;
+            var rnd = new Random();
+            var r = rnd.Next(0, 256);
+            var g = rnd.Next(0, 256);
+            var b = rnd.Next(0, 256);
+
+            string url = "https://randomfox.ca/floof/?ref=apilist.fun";
+
+            using (HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    FoxRoot fox = JsonConvert.DeserializeObject<FoxRoot>(await response.Content.ReadAsStringAsync());
+                    foxurl = $"{fox.image}";
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+
+            embed.ImageUrl = foxurl;
+            embed.Color = new Color(r, g, b);
+
+            await ReplyAsync($"A cuddly fox for {user.Mention}", false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $fox");
+        }
+
+        [Command("dog")]
+        [Alias("dogs")]
+        public async Task getDogPicturesAsync()
+        {
+            var embed = new EmbedBuilder();
+            var user = Context.User;
+            var dogurl = string.Empty;
+            var rnd = new Random();
+            var r = rnd.Next(0, 256);
+            var g = rnd.Next(0, 256);
+            var b = rnd.Next(0, 256);
+
+            var url = "https://random.dog/woof.json";
+
+            using (HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    DogRoot dog = JsonConvert.DeserializeObject<DogRoot>(await response.Content.ReadAsStringAsync());
+                    dogurl = $"{dog.url}";
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+
+            embed.ImageUrl = dogurl;
+            embed.Color = new Color(r, g, b);
+
+            await ReplyAsync($"Fluffball delivery for: {user.Mention}", false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $dog");
+        }
+
+        [Command("cocktail")]
+        public async Task getCocktailsAsync()
+        {
+            var embed = new EmbedBuilder();
+            var sbTitle = new StringBuilder();
+            var sb = new StringBuilder();
+            var user = Context.User;
+            var rnd = new Random();
+            var imageurl = string.Empty;
+            var r = rnd.Next(0, 256);
+            var g = rnd.Next(0, 256);
+            var b = rnd.Next(0, 256);
+
+            var url = "https://www.thecocktaildb.com/api/json/v1/1/random.php";
+
+            using (HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    CocktailRoot cocktail = JsonConvert.DeserializeObject<CocktailRoot>(await response.Content.ReadAsStringAsync());
+                    sbTitle.AppendLine($"Cocktail recipe: {cocktail.drinks[0].strDrink}");
+                    sb.AppendLine($"[{user.Mention}]\n");
+                    sb.AppendLine($"**Category:** {cocktail.drinks[0].strCategory}");
+                    sb.AppendLine($"**Type:** {cocktail.drinks[0].strAlcoholic}");
+                    sb.AppendLine($"**Glass type:** {cocktail.drinks[0].strGlass}\n");
+                    sb.AppendLine($"**Instructions -**");
+                    sb.AppendLine($"{cocktail.drinks[0].strInstructions}\n");
+                    sb.AppendLine($"**Ingredients - **");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure1} {cocktail.drinks[0].strIngredient1}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure2} {cocktail.drinks[0].strIngredient2}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure3} {cocktail.drinks[0].strIngredient3}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure4} {cocktail.drinks[0].strIngredient4}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure5} {cocktail.drinks[0].strIngredient5}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure6} {cocktail.drinks[0].strIngredient6}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure7} {cocktail.drinks[0].strIngredient7}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure8} {cocktail.drinks[0].strIngredient8}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure9} {cocktail.drinks[0].strIngredient9}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure10} {cocktail.drinks[0].strIngredient10}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure11} {cocktail.drinks[0].strIngredient11}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure12} {cocktail.drinks[0].strIngredient12}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure13} {cocktail.drinks[0].strIngredient13}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure14} {cocktail.drinks[0].strIngredient14}");
+                    sb.AppendLine($"{cocktail.drinks[0].strMeasure15} {cocktail.drinks[0].strIngredient15}");
+                    imageurl = cocktail.drinks[0].strDrinkThumb;
+                }
+                else
+                {
+                    sbTitle.AppendLine("Uh oh...");
+                    sb.AppendLine("Something went wrong...");
+                    throw new Exception(response.ReasonPhrase);      
+                }
+            }
+
+            embed.Title = sbTitle.ToString();
+            embed.Description = sb.ToString();
+            embed.ImageUrl = imageurl;
+            embed.Color = new Color(r, g, b);
+
+            await ReplyAsync(null, false, embed.Build());
         }
     }
 }
