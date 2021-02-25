@@ -72,7 +72,7 @@ namespace CamBotButHesFullOfDumbShite.Services
 
             var embed = new EmbedBuilder()
             {
-                Title = "Halt!",
+                Title = "[Error] Halt!",
                 Description = "It's fine, I didn't like moving anyway...",
                 Color = new Color(255, 0, 0)
             };

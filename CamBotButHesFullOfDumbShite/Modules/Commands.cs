@@ -27,12 +27,12 @@ using CamBotButHesFullOfDumbShite.UrbanDictionary;
 using CamBotButHesFullOfDumbShite.NumbersApi;
 using CamBotButHesFullOfDumbShite.OpenWeatherMap;
 using Microsoft.Extensions.Configuration;
-using CamBotButHesFullOfDumbShite.Coins;
-using CamBotButHesFullOfDumbShite.Wordnik;
 using CamBotButHesFullOfDumbShite.CatsApi;
 using CamBotButHesFullOfDumbShite.FoxApi;
 using CamBotButHesFullOfDumbShite.DogApi;
 using CamBotButHesFullOfDumbShite.CocktailApi;
+using CamBotButHesFullOfDumbShite.CoinsApi;
+using CamBotButHesFullOfDumbShite.MealsApi;
 
 namespace CamBotButHesFullOfDumbShite.Modules
 {
@@ -53,7 +53,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             _client = client;
             _client.UserJoined += UserJoined;
             _client.UserLeft += UserLeft;
-            CamBotButHesFullOfDumbShite.API_Stuff.APIHelper.InitialiseClient();
+            API_Stuff.APIHelper.InitialiseClient();
         }
         
         public async Task UserJoined(SocketGuildUser user)
@@ -818,6 +818,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
         }
 
         [Command("cocktail")]
+        [Alias("drinks")]
         public async Task getCocktailsAsync()
         {
             var embed = new EmbedBuilder();
@@ -830,21 +831,21 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var g = rnd.Next(0, 256);
             var b = rnd.Next(0, 256);
 
-            var url = "https://www.thecocktaildb.com/api/json/v1/1/random.php";
+            var url = "https://www.thecocktaildb.com/api/json/v2/9973533/random.php";
 
             using (HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     CocktailRoot cocktail = JsonConvert.DeserializeObject<CocktailRoot>(await response.Content.ReadAsStringAsync());
-                    sbTitle.AppendLine($"Cocktail recipe: {cocktail.drinks[0].strDrink}");
+                    sbTitle.AppendLine($"{cocktail.drinks[0].strDrink}");
                     sb.AppendLine($"[{user.Mention}]\n");
                     sb.AppendLine($"**Category:** {cocktail.drinks[0].strCategory}");
                     sb.AppendLine($"**Type:** {cocktail.drinks[0].strAlcoholic}");
                     sb.AppendLine($"**Glass type:** {cocktail.drinks[0].strGlass}\n");
                     sb.AppendLine($"**Instructions -**");
                     sb.AppendLine($"{cocktail.drinks[0].strInstructions}\n");
-                    sb.AppendLine($"**Ingredients - **");
+                    sb.AppendLine($"**Ingredients -**");
                     sb.AppendLine($"{cocktail.drinks[0].strMeasure1} {cocktail.drinks[0].strIngredient1}");
                     sb.AppendLine($"{cocktail.drinks[0].strMeasure2} {cocktail.drinks[0].strIngredient2}");
                     sb.AppendLine($"{cocktail.drinks[0].strMeasure3} {cocktail.drinks[0].strIngredient3}");
@@ -876,6 +877,140 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(r, g, b);
 
             await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $cocktail");
+        }
+
+        [Command("prices")]
+        [Alias("coins", "coin")]
+        public async Task getFirstTenCoins()
+        {
+            var sb = new StringBuilder();
+            var sbTitle = new StringBuilder();
+            var embed = new EmbedBuilder();
+            var user = Context.User;
+            var rnd = new Random();
+            var r = rnd.Next(0, 256);
+            var g = rnd.Next(0, 256);
+            var b = rnd.Next(0, 256);
+
+            var url = "https://api.coinlore.net/api/tickers/";
+
+            using(HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    CoinsRoot coin = JsonConvert.DeserializeObject<CoinsRoot>(await response.Content.ReadAsStringAsync());
+                    sb.AppendLine($"[{user.Mention}]\n");
+                    for(var i = 0; i <= 10; i++)
+                    {
+                        sb.AppendLine($"**{coin.data[i].name} - **");
+                        sb.AppendLine($"**Price:** ${coin.data[i].price_usd}");
+                        sb.AppendLine($"**24h Change:** {coin.data[i].percent_change_24h}%\n");
+                    }
+                    sbTitle.AppendLine("Top 10 cryptocurrency prices!");
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+
+            embed.Title = sbTitle.ToString();
+            embed.Description = sb.ToString();
+            embed.Color = new Color(r, g, b);
+
+            await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $prices");
+        }
+
+        [Command("recipe")]
+        [Alias("meals", "meal")]
+        public async Task getRandomMealRecipe()
+        {
+            var embed = new EmbedBuilder();
+            var sbTitle = new StringBuilder();
+            var sb = new StringBuilder();
+            var footerText = string.Empty;
+            var user = Context.User;
+            var rnd = new Random();
+            var imageurl = string.Empty;
+            var r = rnd.Next(0, 256);
+            var g = rnd.Next(0, 256);
+            var b = rnd.Next(0, 256);
+
+            var url = "https://www.themealdb.com/api/json/v2/9973533/random.php";
+
+            using(HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    MealsRoot meal = JsonConvert.DeserializeObject<MealsRoot>(await response.Content.ReadAsStringAsync());           
+                    sb.AppendLine($"[{user.Mention}]\n");
+                    
+
+                    Char[] chars = meal.meals[0].strInstructions.ToCharArray();
+                    int amountOfChars = 0;
+                    foreach(char c in chars)
+                    {
+                        amountOfChars++;
+                    }
+
+                    if(amountOfChars > 1700)
+                    {
+                        sbTitle.AppendLine("Error");
+                        sb.AppendLine($"Uh oh...");
+                        sb.AppendLine($"An error occurred... Please try again.");
+                    }
+                    else
+                    {
+                        sbTitle.AppendLine($"{meal.meals[0].strMeal}");
+                        sb.AppendLine($"**Category:** {meal.meals[0].strCategory}");
+                        sb.AppendLine($"**Area:** {meal.meals[0].strArea}");
+                        sb.AppendLine($"**Tags:** {meal.meals[0].strTags}\n");
+                        sb.AppendLine($"**Instructions -**");
+                        sb.AppendLine($"{meal.meals[0].strInstructions}\n");
+                        sb.AppendLine($"**Ingredients -**");
+                        sb.AppendLine($"{meal.meals[0].strMeasure1} {meal.meals[0].strIngredient1}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure2} {meal.meals[0].strIngredient2}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure3} {meal.meals[0].strIngredient3}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure4} {meal.meals[0].strIngredient4}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure5} {meal.meals[0].strIngredient5}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure6} {meal.meals[0].strIngredient6}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure7} {meal.meals[0].strIngredient7}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure8} {meal.meals[0].strIngredient8}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure9} {meal.meals[0].strIngredient9}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure10} {meal.meals[0].strIngredient10}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure11} {meal.meals[0].strIngredient11}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure12} {meal.meals[0].strIngredient12}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure13} {meal.meals[0].strIngredient13}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure14} {meal.meals[0].strIngredient14}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure15} {meal.meals[0].strIngredient15}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure16} {meal.meals[0].strIngredient16}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure17} {meal.meals[0].strIngredient17}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure18} {meal.meals[0].strIngredient18}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure19} {meal.meals[0].strIngredient19}");
+                        sb.AppendLine($"{meal.meals[0].strMeasure20} {meal.meals[0].strIngredient20}");
+                        imageurl = meal.meals[0].strMealThumb;
+                        footerText = meal.meals[0].strSource;
+                    }  
+                    
+                }
+                else
+                {
+                    sbTitle.AppendLine("Uh oh...");
+                    sb.AppendLine("Something went wrong...");
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+
+            embed.Title = sbTitle.ToString();
+            embed.Description = sb.ToString();
+            embed.ImageUrl = imageurl;
+            embed.Color = new Color(r, g, b);
+            embed.Url = $"{footerText}";
+
+            await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $recipe");
         }
     }
 }
