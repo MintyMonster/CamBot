@@ -33,6 +33,7 @@ using CamBotButHesFullOfDumbShite.DogApi;
 using CamBotButHesFullOfDumbShite.CocktailApi;
 using CamBotButHesFullOfDumbShite.CoinsApi;
 using CamBotButHesFullOfDumbShite.MealsApi;
+using CamBotButHesFullOfDumbShite.BoredApi;
 
 namespace CamBotButHesFullOfDumbShite.Modules
 {
@@ -51,61 +52,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var client = services.GetRequiredService<DiscordSocketClient>();
             _services = services;
             _client = client;
-            _client.UserJoined += UserJoined;
-            _client.UserLeft += UserLeft;
             API_Stuff.APIHelper.InitialiseClient();
-        }
-        
-        public async Task UserJoined(SocketGuildUser user)
-        {
-            var sb = new StringBuilder();
-            if (user.IsBot || user.IsWebhook) return;
-            Random rnd = new Random();
-            int messageNum = rnd.Next(0, 11);
-
-            switch (messageNum)
-            {
-                case 1:
-                    sb.AppendLine($"I welcome you, {user.Mention}!");
-                    break;
-                case 2:
-                    sb.AppendLine($"We are delighted to have you, {user.Mention}!");
-                    break;
-                case 3:
-                    sb.AppendLine($"Greetings, {user.Mention}!");
-                    break;
-                case 4:
-                    sb.AppendLine($"A big hello to {user.Mention} from everyone!");
-                    break;
-                case 5:
-                    sb.AppendLine($"It's a pleasure, {user.Mention}!");
-                    break;
-                case 6:
-                    sb.AppendLine($"Buenos dias, {user.Mention}");
-                    break;
-                case 7:
-                    sb.AppendLine($"Why hello there, {user.Mention}");
-                    break;
-                case 8:
-                    sb.AppendLine($"{user.Mention}, I hope you brought pizza!");
-                    break;
-                case 9:
-                    sb.AppendLine($"We missed you, {user.Mention}");
-                    break;
-                case 10:
-                    sb.AppendLine($"What's up, {user.Mention}?");
-                    break;
-            }
-
-            await (user.Guild.DefaultChannel).SendMessageAsync(sb.ToString());
-            return;
-        }
-
-        public async Task UserLeft(SocketGuildUser user)
-        {
-            if (user.IsBot || user.IsWebhook) return;
-            await (user.Guild.DefaultChannel).SendMessageAsync($"I'll miss you, {user.Mention}!");
-            return;
         }
 
         public static async Task<HubbleDefinitionModel> hubbleDefinitionCall(string query = null)
@@ -173,8 +120,12 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var sb = new StringBuilder();
             var user = Context.User.Username;
 
-            sb.AppendLine("**I am a bot full of random things!**\n");
-            sb.AppendLine("-**$test** -> See if the bot's online or not!\n");
+            // make special help for each command
+
+            sb.AppendLine("**I am the em-bot-diment of the word Random**\n");
+            sb.AppendLine("**$about** -> Learn about me :)");
+            sb.AppendLine("-**$contact** -> Contact my developer!\n");
+            sb.AppendLine("-**$test** -> Am I online, or am I not online? That is the question.\n");
             sb.AppendLine("-**$apod {optional: 'today'}** -> Get a random Astrology picture!\n");
             sb.AppendLine("-**$sdef {word}** -> Get the definition of a space word!\n");
             sb.AppendLine("-**$wiki {word}** -> Get Wikipedia search results!\n");
@@ -189,6 +140,11 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine("-**$fox** -> Enjoy a fluffy fox!\n");
             sb.AppendLine("-**$dog** -> Doggies for everyone!\n");
             sb.AppendLine("-**$cocktail** -> Get a random cocktail recipe!\n");
+            sb.AppendLine("-**$prices** -> Get the top 10 crytocurrency prices!\n");
+            sb.AppendLine("-**$recipe** -> Get a random recipe for dinner!\n");
+            sb.AppendLine("-**$catfact** -> Cat facts in the plenty!\n");
+            sb.AppendLine("-**$bored** -> Bored? Find an activity!\n");
+            
 
             var embed = new EmbedBuilder()
             {
@@ -199,6 +155,48 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.Write($"{DateTime.Now.ToString("HH:mm:ss")} => {user} => $help"); // log to console
+        }
+
+        [Command("contact")]
+        public async Task contactMe()
+        {
+            var sb = new StringBuilder();
+            var embed = new EmbedBuilder();
+
+            sb.AppendLine("Should anyone want to contact me regarding the use of any of the information within this bot, please email me at **cambot@minty-studios.co.uk**\n");
+            sb.AppendLine("**Suggestions/Questions:**");
+            sb.AppendLine("If you would like to make a suggestion or ask a question, email me at **cambot@minty-studios.co.uk**\nPlease ensure the subject of your email is **Suggestion/Question**\n");
+            sb.AppendLine("Sidenote: If you send irrelevent emails to this address, you will be ignored and/or blocked.\n");
+            sb.AppendLine("Thank you in advance!");
+
+            embed.Title = "Contact -";
+            embed.Description = sb.ToString();
+            embed.Color = new Color(64, 224, 208);
+
+            await ReplyAsync(null, false, embed.Build());
+        }
+
+
+        [Command("about")]
+        [Alias("info")]
+        public async Task getAboutAsync()
+        {
+            var sb = new StringBuilder();
+            var embed = new EmbedBuilder();
+            var user = Context.User;
+
+            sb.AppendLine($"[{user.Mention}]\n");
+            sb.AppendLine("I am Cambot. My entire purpose is to provide you, my friend, with random information from the world of the internet.");
+            sb.AppendLine("I am currently in beta, and therefore I am not the final product that the world desires, but alas, my developer is working hard everyday to make sure I am up to date and getting new creative ways to feed you information.");
+            sb.AppendLine("\nIf you're clueless as to how I work, do **$help** and learn my commands, you might enjoy some of them!");
+            sb.AppendLine("If you wish to contact my developer, use the **$contact** command.");
+            sb.AppendLine("\nHave fun!");
+
+            embed.Title = "About Cambot!";
+            embed.Description = sb.ToString();
+            embed.Color = new Color(64, 224, 238);
+
+            await ReplyAsync(null, false, embed.Build());
         }
 
 
@@ -806,6 +804,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
                 else
                 {
+                    
                     throw new Exception(response.ReasonPhrase);
                 }
             }
@@ -819,7 +818,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
         [Command("cocktail")]
         [Alias("drinks")]
-        public async Task getCocktailsAsync()
+        public async Task getCocktailsAsync() // look through categories
         {
             var embed = new EmbedBuilder();
             var sbTitle = new StringBuilder();
@@ -867,6 +866,9 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 {
                     sbTitle.AppendLine("Uh oh...");
                     sb.AppendLine("Something went wrong...");
+                    r = 255;
+                    g = 0;
+                    b = 0;
                     throw new Exception(response.ReasonPhrase);      
                 }
             }
@@ -882,7 +884,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
         [Command("prices")]
         [Alias("coins", "coin")]
-        public async Task getFirstTenCoins()
+        public async Task getFirstTenCoins() // Query the coin by name
         {
             var sb = new StringBuilder();
             var sbTitle = new StringBuilder();
@@ -911,6 +913,11 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
                 else
                 {
+                    sbTitle.AppendLine("Uh oh...");
+                    sb.AppendLine("Something went wrong... Please try again.");
+                    r = 255;
+                    g = 0;
+                    b = 0;
                     throw new Exception(response.ReasonPhrase);
                 }
             }
@@ -925,7 +932,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
         [Command("recipe")]
         [Alias("meals", "meal")]
-        public async Task getRandomMealRecipe()
+        public async Task getRandomMealRecipe() // add the ability to query locations/food etc
         {
             var embed = new EmbedBuilder();
             var sbTitle = new StringBuilder();
@@ -999,6 +1006,9 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 {
                     sbTitle.AppendLine("Uh oh...");
                     sb.AppendLine("Something went wrong...");
+                    r = 255;
+                    g = 0;
+                    b = 0;
                     throw new Exception(response.ReasonPhrase);
                 }
             }
@@ -1011,6 +1021,93 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Mention} => $recipe");
+        }
+
+        [Command("catfact")]
+        public async Task getCatFact()
+        {
+            var embed = new EmbedBuilder();
+            var sbTitle = new StringBuilder();
+            var sb = new StringBuilder();
+            var user = Context.User;
+            var rnd = new Random();
+            var imageurl = string.Empty;
+            var r = rnd.Next(0, 256);
+            var g = rnd.Next(0, 256);
+            var b = rnd.Next(0, 256);
+
+            var url = "https://catfact.ninja/fact";
+
+            using(HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    CatFactsRoot cat = JsonConvert.DeserializeObject<CatFactsRoot>(await response.Content.ReadAsStringAsync());
+                    sbTitle.AppendLine("Cat fact!");
+                    sb.AppendLine($"**Fact:** {cat.fact}");
+                }
+                else
+                {
+                    sbTitle.AppendLine("Uh oh...");
+                    sb.AppendLine("Something went wrong... Please try again.");
+                    r = 255;
+                    g = 0;
+                    b = 0;
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+
+            embed.Title = sbTitle.ToString();
+            embed.Description = sb.ToString();
+            embed.Color = new Color(r, g, b);
+
+            await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $catfact");
+        }
+
+        [Command("bored")]
+        public async Task getBoredActivitiesAsync()
+        {
+            var embed = new EmbedBuilder();
+            var sbTitle = new StringBuilder();
+            var sb = new StringBuilder();
+            var user = Context.User;
+            var rnd = new Random();
+            var imageurl = string.Empty;
+            var r = rnd.Next(0, 256);
+            var g = rnd.Next(0, 256);
+            var b = rnd.Next(0, 256);
+
+            var url = "https://www.boredapi.com/api/activity";
+
+            using(HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    BoredRoot bored = JsonConvert.DeserializeObject<BoredRoot>(await response.Content.ReadAsStringAsync());
+                    sbTitle.AppendLine("Bored? Here's an acitivity!");
+                    sb.AppendLine($"[{user.Mention}]\n");
+                    sb.AppendLine($"**Activity:** {bored.activity}");
+                    sb.AppendLine($"**Type:** {bored.type}");
+                    sb.AppendLine($"**Participants:** {bored.participants}");
+                }
+                else
+                {
+                    sbTitle.AppendLine("Uh oh...");
+                    sb.AppendLine("Something went wrong... Please try again");
+                    r = 255;
+                    g = 0;
+                    b = 0;
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+
+            embed.Title = sbTitle.ToString();
+            embed.Description = sb.ToString();
+            embed.Color = new Color(r, g, b);
+
+            await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $bored");
         }
     }
 }
