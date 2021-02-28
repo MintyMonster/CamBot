@@ -34,6 +34,7 @@ using CamBotButHesFullOfDumbShite.CocktailApi;
 using CamBotButHesFullOfDumbShite.CoinsApi;
 using CamBotButHesFullOfDumbShite.MealsApi;
 using CamBotButHesFullOfDumbShite.BoredApi;
+using CamBotButHesFullOfDumbShite.TrefleApi;
 
 namespace CamBotButHesFullOfDumbShite.Modules
 {
@@ -123,7 +124,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             // make special help for each command
 
             sb.AppendLine("**I am the em-bot-diment of the word Random**\n");
-            sb.AppendLine("**$about** -> Learn about me :)");
+            sb.AppendLine("-**$about** -> Learn about me :)\n");
             sb.AppendLine("-**$contact** -> Contact my developer!\n");
             sb.AppendLine("-**$test** -> Am I online, or am I not online? That is the question.\n");
             sb.AppendLine("-**$apod {optional: 'today'}** -> Get a random Astrology picture!\n");
@@ -144,6 +145,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine("-**$recipe** -> Get a random recipe for dinner!\n");
             sb.AppendLine("-**$catfact** -> Cat facts in the plenty!\n");
             sb.AppendLine("-**$bored** -> Bored? Find an activity!\n");
+            sb.AppendLine("-**$plant {optional: name/genus}** -> Get a random plant, or search for a specific one!\n");
             
 
             var embed = new EmbedBuilder()
@@ -206,7 +208,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var user = Context.User.Username;
             var embed = new EmbedBuilder()
             {
-                Title = "We are online!",
+                Title = "I am alive!",
                 Color = new Color(0, 255, 0),
             };
 
@@ -1108,6 +1110,124 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Mention} => $bored");
+        }
+
+        [Command("plants")]
+        [Alias("plant")]
+        public async Task getPlantsAsync([Remainder]string query = null)
+        {
+            var embed = new EmbedBuilder();
+            var sbTitle = new StringBuilder();
+            var sb = new StringBuilder();
+            var user = Context.User;
+            var rnd = new Random();
+            var imageurl = string.Empty;
+            var r = rnd.Next(0, 256);
+            var g = rnd.Next(0, 256);
+            var b = rnd.Next(0, 256);
+            var token = _config["TrefleKey"];
+
+            if (string.IsNullOrEmpty(query))
+            {
+                var page = rnd.Next(1, 18879);
+                var url = $"https://trefle.io/api/v1/plants?page={page}&token={token}";
+
+                using(HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        TreflePageRoot tproot = JsonConvert.DeserializeObject<TreflePageRoot>(await response.Content.ReadAsStringAsync());
+                        var i = rnd.Next(tproot.data.Count);
+                        sb.AppendLine($"[{user.Mention}]\n");
+                        if (string.IsNullOrEmpty((string)tproot.data[i].common_name))
+                        {
+                            sbTitle.AppendLine(tproot.data[i].scientific_name);
+                            sb.AppendLine($"**Name:** {tproot.data[i].scientific_name}");
+                            sb.AppendLine($"**Scientific Name:** {tproot.data[i].scientific_name}");
+                        }
+                        else
+                        {
+                            sbTitle.AppendLine((string)tproot.data[i].common_name);
+                            sb.AppendLine($"**Name:** {tproot.data[i].common_name}");
+                            sb.AppendLine($"**Scientific Name:** {tproot.data[i].scientific_name}");
+                        }
+
+                        sb.AppendLine($"**Family name:** {tproot.data[i].family_common_name}");
+                        sb.AppendLine($"**Taxanomic Rank:** {tproot.data[i].rank}");
+                        sb.AppendLine($"**Genus:** {tproot.data[i].genus}");
+                        sb.AppendLine($"**Family:** {tproot.data[i].family}");
+                        if (!string.IsNullOrEmpty(tproot.data[i].image_url))
+                        {
+                            sb.AppendLine($"**Image Url:** {tproot.data[i].image_url}.jpg");
+                            imageurl = $"{tproot.data[i].image_url}.jpg";
+                        }
+                    }
+                    else
+                    {
+                        sbTitle.AppendLine($"Uh oh...");
+                        sb.AppendLine("Something went wrong... Please try again.");
+                        r = 255;
+                        g = 0;
+                        b = 0;
+                        throw new Exception(response.ReasonPhrase);
+                    }
+                }
+            }
+            else
+            {
+                var url = $"https://trefle.io/api/v1/plants/search?q={query}&token={token}";
+
+                using(HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        TrefleRoot troot = JsonConvert.DeserializeObject<TrefleRoot>(await response.Content.ReadAsStringAsync());
+                        sb.AppendLine($"[{user.Mention}]\n");
+                        if (string.IsNullOrEmpty((string)troot.data[0].common_name))
+                        {
+                            sbTitle.AppendLine(troot.data[0].scientific_name);
+                            sb.AppendLine($"**Name:** {troot.data[0].scientific_name}");
+                            sb.AppendLine($"**Scientific Name:** {troot.data[0].scientific_name}");
+                        }
+                        else
+                        {
+                            sbTitle.AppendLine((string)troot.data[0].common_name);
+                            sb.AppendLine($"**Name:** {troot.data[0].common_name}");
+                            sb.AppendLine($"**Scientific Name:** {troot.data[0].scientific_name}");
+                        }
+
+                        sb.AppendLine($"**Family name:** {troot.data[0].family_common_name}");
+                        sb.AppendLine($"**Taxanomic Rank:** {troot.data[0].rank}");
+                        sb.AppendLine($"**Genus:** {troot.data[0].genus}");
+                        sb.AppendLine($"**Family:** {troot.data[0].family}\n");
+                        if (!string.IsNullOrEmpty(troot.data[0].image_url))
+                        {
+                            sb.AppendLine($"**Image Url:** {troot.data[0].image_url}.jpg");
+                            imageurl = $"{troot.data[0].image_url}.jpg";
+                        }
+                        
+                        sb.AppendLine("Not what you're looking for? Try specifying your query.");
+                        
+                    }
+                    else
+                    {
+                        sbTitle.AppendLine($"Uh oh...");
+                        sb.AppendLine("Something went wrong, or your query does not match any plants. Please try again, or try a different query.");
+                        r = 255;
+                        g = 0;
+                        b = 0;
+                        throw new Exception(response.ReasonPhrase);
+                    }
+                }
+            }
+
+            embed.Title = sbTitle.ToString();
+            embed.Description = sb.ToString();
+            embed.ImageUrl = imageurl;
+            embed.Color = new Color(r, g, b);
+
+            await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Mention} => $plants");
         }
     }
 }
