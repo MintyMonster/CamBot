@@ -160,11 +160,13 @@ namespace CamBotButHesFullOfDumbShite.Modules
         }
 
         [Command("contact")]
+        [Alias("suggestions", "improvements", "improve", "suggest", "contactme")]
         public async Task contactMe()
         {
             var sb = new StringBuilder();
             var embed = new EmbedBuilder();
 
+            sb.AppendLine($"I am kinda small at the moment :( and I would love it if you could recommend me anything else to add to Cambot! Please check the **Suggestions/Questions** part of this command.\n");
             sb.AppendLine("Should anyone want to contact me regarding the use of any of the information within this bot, please email me at **cambot@minty-studios.co.uk**\n");
             sb.AppendLine("**Suggestions/Questions:**");
             sb.AppendLine("If you would like to make a suggestion or ask a question, email me at **cambot@minty-studios.co.uk**\nPlease ensure the subject of your email is **Suggestion/Question**\n");
