@@ -45,7 +45,6 @@ namespace CamBotButHesFullOfDumbShite.Modules
         private readonly CommandService _commands;
         private readonly IServiceProvider _services;
         private readonly IConfiguration _config;
-
         public Commands(IServiceProvider services)
         {
             _commands = services.GetRequiredService<CommandService>();
@@ -125,7 +124,8 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             sb.AppendLine("**I am the em-bot-diment of the word Random**\n");
             sb.AppendLine("-**$about** -> Learn about me :)\n");
-            sb.AppendLine("-**$contact** -> Contact my developer!\n");
+            sb.AppendLine("-**$donate** -> Want to donate? Use this command!");
+            sb.AppendLine("-**$contact** -> Contact my developer!\n");  
             sb.AppendLine("-**$test** -> Am I online, or am I not online? That is the question.\n");
             sb.AppendLine("-**$apod {optional: 'today'}** -> Get a random Astrology picture!\n");
             sb.AppendLine("-**$sdef {word}** -> Get the definition of a space word!\n");
@@ -150,13 +150,31 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             var embed = new EmbedBuilder()
             {
-                Title = "Help",
+                Title = "Help from CamBot",
                 Description = sb.ToString(),
                 Color = new Color(255, 255, 0)
             };
 
             await ReplyAsync(null, false, embed.Build());
-            Console.Write($"{DateTime.Now.ToString("HH:mm:ss")} => {user} => $help"); // log to console
+            Console.Write($"{user} => $help"); // log to console
+        }
+
+        [Command("donate")]
+        public async Task getDonation()
+        {
+            var sb = new StringBuilder();
+            var embed = new EmbedBuilder();
+            var user = Context.User;
+
+            sb.AppendLine($"[{user.Mention}]\n");
+            sb.AppendLine($"All donations go to keeping me alive! But don't worry, I will continue to get updated and improved over time!\n Want to suggest something? Use **$contact**\n");
+            sb.AppendLine($"Want to donate? Click here: https://paypal.me/cambotapp?locale.x=en_GB");
+
+            embed.Title = "Donate";
+            embed.Description = sb.ToString();
+
+            await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Username} -> $donate");
         }
 
         [Command("contact")]
@@ -180,6 +198,23 @@ namespace CamBotButHesFullOfDumbShite.Modules
             await ReplyAsync(null, false, embed.Build());
         }
 
+        [Command("addtoserver")]
+        [Alias("link", "add")]
+        public async Task getLinkForCambot()
+        {
+            var sb = new StringBuilder();
+            var embed = new EmbedBuilder();
+            var user = Context.User;
+            sb.AppendLine($"[{user.Mention}]\n");
+            sb.AppendLine($"Want to add the bot to your own server? Click this link: [http://bit.ly/CamBot]");
+
+            embed.Title = "Add Cambot to your server!";
+            embed.Description = sb.ToString();
+
+            await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Username} => $link");
+        }
+
 
         [Command("about")]
         [Alias("info")]
@@ -193,7 +228,8 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine("I am Cambot. My entire purpose is to provide you, my friend, with random information from the world of the internet.");
             sb.AppendLine("I am currently in beta, and therefore I am not the final product that the world desires, but alas, my developer is working hard everyday to make sure I am up to date and getting new creative ways to feed you information.");
             sb.AppendLine("\nIf you're clueless as to how I work, do **$help** and learn my commands, you might enjoy some of them!");
-            sb.AppendLine("If you wish to contact my developer, use the **$contact** command.");
+            sb.AppendLine("If you wish to contact my developer, use the **$contact** command.\n");
+            sb.AppendLine($"Want to add the bot to your own server? Click this link: [http://bit.ly/CamBot]");
             sb.AppendLine("\nHave fun!");
 
             embed.Title = "About Cambot!";
@@ -201,6 +237,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(64, 224, 238);
 
             await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Username} => $about");
         }
 
 
@@ -215,7 +252,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             };
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")} => {user} => $test");
+            Console.WriteLine($"{user} => $test");
         }
 
         [Command("APOD")]
@@ -241,7 +278,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
                 else
                 {
-                    if (year == 2021)
+                    if (year == DateTime.Now.Year)
                     {
                         var currentYear = DateTime.Now.Year;
                         var currentMonth = DateTime.Now.Month;
@@ -443,7 +480,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Description = sb.ToString();
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Mention} => $ISS");
+            Console.WriteLine($"{user.Username} => $ISS");
         }
 
         [Command("Mars")]
@@ -493,7 +530,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             };
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Mention} => $mars");
+            Console.WriteLine($"{user.Username} => $mars");
         }
 
         [Command("UBdefine")]
@@ -533,7 +570,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(0, 0, 128);
 
             await ReplyAsync(user.Mention, false, embed.Build());
-            Console.WriteLine($"{user.Mention} => $ubdefine");
+            Console.WriteLine($"{user.Username} => $ubdefine");
         }
 
         [Command("yearfact")]
@@ -584,7 +621,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(255, 255, 0);
 
             await ReplyAsync(user.Mention, false, embed.Build());
-            Console.WriteLine($"{user.Mention} => $yearfact");
+            Console.WriteLine($"{user.Username} => $yearfact");
         }
 
         [Command("mathfact")]
@@ -663,7 +700,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(255, 255, 0);
 
             await ReplyAsync(user.Mention, false, embed.Build());
-            Console.WriteLine($"{user} => $mathfact");
+            Console.WriteLine($"{user.Username} => $mathfact");
         }
 
         [Command("weather")]
@@ -714,7 +751,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(135, 206, 235);
 
             await ReplyAsync(user.Mention, false, embed.Build());
-            Console.WriteLine($"{user.Mention} => $weather");
+            Console.WriteLine($"{user.Username} => $weather {query}");
         }
 
         [Command("cat")]
@@ -748,7 +785,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(r, g, b);
 
             await ReplyAsync($"{user.Mention} wants to see cuteness!", false, embed.Build());
-            Console.WriteLine($"{user.Mention} => $cat");
+            Console.WriteLine($"{user.Username} => $cat");
         }
 
         [Command("fox")]
@@ -817,7 +854,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(r, g, b);
 
             await ReplyAsync($"Fluffball delivery for: {user.Mention}", false, embed.Build());
-            Console.WriteLine($"{user.Mention} => $dog");
+            Console.WriteLine($"{user.Username} => $dog");
         }
 
         [Command("cocktail")]
@@ -883,7 +920,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(r, g, b);
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Mention} => $cocktail");
+            Console.WriteLine($"{user.Username} => $cocktail {sbTitle}");
         }
 
         [Command("prices")]
@@ -901,13 +938,13 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             var url = "https://api.coinlore.net/api/tickers/";
 
-            using(HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
+            using (HttpResponseMessage response = await API_Stuff.APIHelper.APIClient.GetAsync(url))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     CoinsRoot coin = JsonConvert.DeserializeObject<CoinsRoot>(await response.Content.ReadAsStringAsync());
                     sb.AppendLine($"[{user.Mention}]\n");
-                    for(var i = 0; i <= 10; i++)
+                    for (var i = 0; i <= 10; i++)
                     {
                         sb.AppendLine($"**{coin.data[i].name} - **");
                         sb.AppendLine($"**Price:** ${coin.data[i].price_usd}");
@@ -926,12 +963,14 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
             }
 
+
+
             embed.Title = sbTitle.ToString();
             embed.Description = sb.ToString();
             embed.Color = new Color(r, g, b);
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Mention} => $prices");
+            Console.WriteLine($"{user.Username} => $prices");
         }
 
         [Command("recipe")]
@@ -1024,7 +1063,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Url = $"{footerText}";
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Mention} => $recipe");
+            Console.WriteLine($"{user.Username} => $recipe");
         }
 
         [Command("catfact")]
@@ -1066,7 +1105,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(r, g, b);
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Mention} => $catfact");
+            Console.WriteLine($"{user.Username} => $catfact");
         }
 
         [Command("bored")]
@@ -1111,7 +1150,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(r, g, b);
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Mention} => $bored");
+            Console.WriteLine($"{user.Username} => $bored");
         }
 
         [Command("plants")]
@@ -1207,9 +1246,9 @@ namespace CamBotButHesFullOfDumbShite.Modules
                             sb.AppendLine($"**Image Url:** {troot.data[0].image_url}.jpg");
                             imageurl = $"{troot.data[0].image_url}.jpg";
                         }
-                        
+
                         sb.AppendLine("Not what you're looking for? Try specifying your query.");
-                        
+
                     }
                     else
                     {
@@ -1229,7 +1268,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(r, g, b);
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Mention} => $plants");
+            Console.WriteLine($"{user.Username} => $plants");
         }
     }
 }
