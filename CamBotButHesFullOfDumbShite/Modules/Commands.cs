@@ -124,7 +124,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             sb.AppendLine("**I am the em-bot-diment of the word Random**\n");
             sb.AppendLine("-**$about** -> Learn about me :)\n");
-            sb.AppendLine("-**$donate** -> Want to donate? Use this command!");
+            sb.AppendLine("-**$donate** -> Want to donate? Use this command!\n");
             sb.AppendLine("-**$contact** -> Contact my developer!\n");  
             sb.AppendLine("-**$test** -> Am I online, or am I not online? That is the question.\n");
             sb.AppendLine("-**$apod {optional: 'today'}** -> Get a random Astrology picture!\n");
