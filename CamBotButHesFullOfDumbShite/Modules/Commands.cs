@@ -287,6 +287,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine("-**$about** -> Learn about me :)");
             sb.AppendLine("-**$contact** -> Contact my developer! :email:");
             sb.AppendLine("-**$test** -> Am I online, or am I not online? That is the question.");
+            sb.AppendLine("-**$add** -> Add me to your server!");
             sb.AppendLine("-**$changelog** -> See my changes!");
 
             sb.AppendLine($"\n__**Commands:**__");
@@ -340,12 +341,9 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine($"**Added:**");
             sb.AppendLine($"-$inspirationalquotes/$quotes");
             sb.AppendLine($"-$donate");
-            sb.AppendLine($"- You can now try and talk to me in Direct messages. Not a lot to say though at the moment :(");
             sb.AppendLine($"\n**Ammended:**");
             sb.AppendLine($"-$about");
             sb.AppendLine($"-$help - Made it look pretty");
-            sb.AppendLine($"\n**Removed:**");
-            sb.AppendLine($"- Use of commands in Direct message due to conflicts within code (Might be re-added at later stage)");
             sb.AppendLine($"\nWant to see more? Try $help");
 
             embed.Title = "ChangeLog -";
