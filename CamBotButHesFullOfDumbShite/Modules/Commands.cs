@@ -117,7 +117,8 @@ namespace CamBotButHesFullOfDumbShite.Modules
             if (!(msg is SocketUserMessage message)) return;
             if (message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos)) return;
 
-            if (msg.Channel is SocketDMChannel)
+            if (msg.Channel is SocketDMChannel) //if sandra's id messages the bot, he responds with mum or something, maybe French?
+                                                // Personalised messages for friends
             {
                 bool b = badWords.Any(s => msg.Content.ToLower().Contains(s));
                 if (b == true)
@@ -128,12 +129,65 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
                 else
                 {
-                    await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", $"Hi there, {msg.Author.Mention}!\nI don't have many replies right now, but I am getting improved daily to make sure you can talk to me!\nIf you're lost, and want to see what I do, do **$help**\nHave a nice day!");
-                    Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
+                    if(msg.Author.Id == 336978114498527242) //Sandra
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", $"Bonjour Maman,\nje t'aime.\nWell... That's enough French. As you're my developer's wife, you're automatically my mother :heart:");
+
+                    }else if(msg.Author.Id == 289047355498561538) // Cameron
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", "I also agree that junglers need to learn how to play their roles.");
+
+                    }else if(msg.Author.Id == 186553383396704256) // Karl
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", "Hey Karl,\nYou really need to get off Genshin some time. Also, get gud at Pyke lulw");
+
+                    }else if(msg.Author.Id == 522863720268038144) // Aidan
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", "The legendary Owner of Metro.\nIf you replied to your dms, that would be great. Also, thanks for making my face. Are you technically my dad? :heart:");
+
+                    }else if(msg.Author.Id == 191999899573682187) // Jack
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", "The legendary quote God himself.\nCurrently trying to convince Cameron to allow me to add your quotes to me, but he's not budging. Apparently they're 'special' and only for my brother, JackBot. :smiling_face_with_tear: \nI listen to your music whilst nobody's using me. Thank you :heart:");
+
+                    }else if(msg.Author.Id == 439548717570195466) // Manu
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Blank.png", "Hey Manu, I've emailed Google to ask if I can use their new AI to teach you how to spell. For now, I'll let Cameron help you. :wink:");
+
+                    }else if(msg.Author.Id == 169023834702348288) // Josh
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Blank.png", "Uhm... Hi Mr Policeman Sir.\nI'm not doing anything naughty... I promise :smile: Cameron on the other hand... uhhh.");
+
+                    }else if(msg.Author.Id == 87026109027221504) // Ro
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", "Legend says... Ro invented the new meta of Stridebreaker Ornn.");
+
+                    }else if(msg.Author.Id == 274508229331910656) // Imm
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", "Can you boost Cameron to Diamond? He needs it... I'm embarrassed. ");
+
+                    }else if(msg.Author.Id == 304643949027393537) // Alex
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Blank.png", "It's pronounced LYCHEE (Lie-chee)");
+
+                    }else if(msg.Author.Id == 105655241713713152) // Wils
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Blank.png", "The fuhrer himself?! Messaging me?! What an honour!");
+
+                    }else if(msg.Author.Id == 235753212009775106)
+                    {
+                        await msg.Channel.SendMessageAsync("Doing things I promise");
+                    }
+                    else
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", $"Hi there, {msg.Author.Mention}!\nI don't have many replies right now, but I am getting improved daily to make sure you can talk to me!\nIf you're lost, and want to see what I do, do **$help**\nHave a nice day!");
+                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
+                    }
                 }
 
             }
         }
+
+        //
 
         public static async Task<HubbleDefinitionModel> hubbleDefinitionCall(string query = null)
         {
