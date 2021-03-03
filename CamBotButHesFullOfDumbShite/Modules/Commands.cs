@@ -114,9 +114,8 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             if (msg.Source != MessageSource.User) return;
             if (!(msg is SocketUserMessage message)) return;
-            if (message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos)) return;
-            
-            //if (msg.Author.Id == _client.CurrentUser.Id) return;
+            if (message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos)) return;        
+            if (msg.Author.Id == _client.CurrentUser.Id) return;
 
             if (msg.Channel is SocketDMChannel)
             {
