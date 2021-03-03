@@ -72,7 +72,7 @@ namespace CamBotButHesFullOfDumbShite.Services
                 return;
             }
 
-            await context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", "Error, something went wrong :(");
+            await context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", "Error, something went wrong :(");
         }
     }
 }
