@@ -109,11 +109,16 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 "I'll get my developer on you!"
             };
 
+            var argPos = 0;
+            char prefix = '$';
+
             if (msg.Source != MessageSource.User) return;
             if (!(msg is SocketUserMessage message)) return;
-            //if (msg.Author.Id == _client.CurrentUser.Id) return;
+            if (message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos)) return;
             
-            if(msg.Channel is SocketDMChannel)
+            //if (msg.Author.Id == _client.CurrentUser.Id) return;
+
+            if (msg.Channel is SocketDMChannel)
             {
                 bool b = badWords.Any(s => msg.Content.ToLower().Contains(s));
                 if (b == true)
