@@ -112,7 +112,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             if (msg.Source != MessageSource.User) return;
             if (!(msg is SocketUserMessage message)) return;
             //if (msg.Author.Id == _client.CurrentUser.Id) return;
-
+            
             if(msg.Channel is SocketDMChannel)
             {
                 bool b = badWords.Any(s => msg.Content.ToLower().Contains(s));
@@ -120,10 +120,12 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 {
                     var r = replies[rnd.Next(replies.Count)].ToString();
                     await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Angry.png", r);
+                    Console.WriteLine($"{msg.Author.Username} was rude to CamBot!");
                 }
                 else
                 {
                     await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", $"Hi there, {msg.Author.Mention}!\nI don't have many replies right now, but I am getting improved daily to make sure you can talk to me!\nIf you're lost, and want to see what I do, do **$help**\nHave a nice day!");
+                    Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
                 }
 
             }
