@@ -35,7 +35,6 @@ using CamBotButHesFullOfDumbShite.CoinsApi;
 using CamBotButHesFullOfDumbShite.MealsApi;
 using CamBotButHesFullOfDumbShite.BoredApi;
 using CamBotButHesFullOfDumbShite.TrefleApi;
-using CamBotButHesFullOfDumbShite.InpirationalQuotesAPI;
 
 namespace CamBotButHesFullOfDumbShite.Modules
 {
@@ -58,11 +57,11 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var client = services.GetRequiredService<DiscordSocketClient>();
             _services = services;
             _client = client;
-            _client.MessageReceived += MessageReceivedAsync;
+            //_client.MessageReceived += MessageReceivedAsync;
             API_Stuff.APIHelper.InitialiseClient();
         }
 
-        public async Task MessageReceivedAsync(SocketMessage msg)
+        /*public async Task MessageReceivedAsync(SocketMessage msg)
         {
             var rnd = new Random();
             List<string> badWords = new List<string>
@@ -212,7 +211,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
 
             }
-        }
+        }*/
 
         public static async Task<HubbleDefinitionModel> hubbleDefinitionCall(string query = null)
         {
@@ -302,7 +301,6 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine("-**$recipe** -> Get a random recipe for dinner! :shallow_pan_of_food:");
             sb.AppendLine("-**$catfact** -> Cat facts in the plenty! :cat:");
             sb.AppendLine("-**$bored** -> Bored? Find an activity! :sleeping:");
-            sb.AppendLine("-**$quotes** -> Get a motivational or inspirational quote for yourself!");
 
             sb.AppendLine($"\n__**Commands with optional queries:**__");
             sb.AppendLine("-**$apod <optional: 'today'>** -> Get a random Astrology picture! :ringed_planet:");
@@ -1511,63 +1509,6 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             Console.WriteLine($"{user.Username} => $plants");
-        }
-
-        [Command("inspirationalquotes")]
-        [Alias("quotes", "inspiration")]
-        public async Task getInspirationalQuotesAsync()
-        {
-            var embed = new EmbedBuilder();
-            var sbTitle = new StringBuilder();
-            var sb = new StringBuilder();
-            var user = Context.User;
-            var rnd = new Random();
-            var imageurl = string.Empty;
-            var r = rnd.Next(0, 256);
-            var g = rnd.Next(0, 256);
-            var b = rnd.Next(0, 256);
-            var token = _config["RapidApiKey"];
-
-            var client = new HttpClient();
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri("https://healthruwords.p.rapidapi.com/v1/quotes/?maxR=1&size=medium"),
-                Headers =
-                {
-                    { "x-rapidapi-key", $"{token}" },
-                    { "x-rapidapi-host", "healthruwords.p.rapidapi.com" },
-                },
-            };
-            using (var response = await client.SendAsync(request))
-            {
-                
-                if (response.IsSuccessStatusCode)
-                {
-                    var quote = JsonConvert.DeserializeObject<List<QuotesRoot>>(await response.Content.ReadAsStringAsync());
-
-
-                    imageurl = quote[0].media;
-                    sbTitle.AppendLine($"Quote No. {quote[0].id}: {quote[0].title}");
-                    sb.AppendLine($"[{user.Mention}]\n");
-
-                    embed.Title = sbTitle.ToString();
-                    embed.Description = sb.ToString();
-                    embed.ImageUrl = imageurl;
-                    embed.Color = new Color(r, g, b);
-
-                    await ReplyAsync(null, false, embed.Build());
-                }
-                else
-                {
-                    sb.AppendLine($"Something went wrong... Please try again.");
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
-                    throw new Exception(response.ReasonPhrase);
-                }
-
-            }
-            
-            Console.WriteLine($"{user.Username} => $quotes");
         }
     }
 }
