@@ -118,7 +118,8 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 bool b = badWords.Any(s => msg.Content.ToLower().Contains(s));
                 if (b == true)
                 {
-                    await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Angry.png", rnd.Next(replies.Count).ToString());
+                    var r = replies[rnd.Next(replies.Count)].ToString();
+                    await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Angry.png", r);
                 }
                 else
                 {
