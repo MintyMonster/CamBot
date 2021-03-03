@@ -43,6 +43,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
     // Add BBC podcasts
     // Research papers 
     // Swear at Cambot, you end up with ANGRY face
+    // Games - Word scamble?
 
     public class Commands : ModuleBase // _client.MessageReceived > Add a way for CamBot to respond to dms
     {
@@ -57,11 +58,11 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var client = services.GetRequiredService<DiscordSocketClient>();
             _services = services;
             _client = client;
-            //_client.MessageReceived += MessageReceivedAsync;
+            _client.MessageReceived += MessageReceivedAsync;
             API_Stuff.APIHelper.InitialiseClient();
         }
 
-        /*public async Task MessageReceivedAsync(SocketMessage msg)
+        public async Task MessageReceivedAsync(SocketMessage msg)
         {
             var rnd = new Random();
             List<string> badWords = new List<string>
@@ -114,8 +115,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             if (msg.Source != MessageSource.User) return;
             if (!(msg is SocketUserMessage message)) return;
-            if (message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos)) return;        
-            if (msg.Author.Id == _client.CurrentUser.Id) return;
+            if (message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos)) return;
 
             if (msg.Channel is SocketDMChannel)
             {
@@ -129,12 +129,12 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 else
                 {
                     await msg.Channel.SendMessageAsync("hi");
-                    //await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", $"Hi there, {msg.Author.Mention}!\nI don't have many replies right now, but I am getting improved daily to make sure you can talk to me!\nIf you're lost, and want to see what I do, do **$help**\nHave a nice day!");
+                    await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", $"Hi there, {msg.Author.Mention}!\nI don't have many replies right now, but I am getting improved daily to make sure you can talk to me!\nIf you're lost, and want to see what I do, do **$help**\nHave a nice day!");
                     Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
                 }
 
             }
-        }*/
+        }
 
         public static async Task<HubbleDefinitionModel> hubbleDefinitionCall(string query = null)
         {
@@ -204,34 +204,39 @@ namespace CamBotButHesFullOfDumbShite.Modules
             // make special help for each command
 
             sb.AppendLine("**I am the em-bot-diment of the word Random**\n");
-            sb.AppendLine("-**$about** -> Learn about me :)\n");
-            sb.AppendLine("-**$donate** -> Want to donate? Use this command!\n");
-            sb.AppendLine("-**$contact** -> Contact my developer!\n");  
-            sb.AppendLine("-**$test** -> Am I online, or am I not online? That is the question.\n");
-            sb.AppendLine("-**Changelog** -> See my changes!");
-            sb.AppendLine("-**$apod {optional: 'today'}** -> Get a random Astrology picture!\n");
-            sb.AppendLine("-**$sdef {word}** -> Get the definition of a space word!\n");
-            sb.AppendLine("-**$wiki {word}** -> Get Wikipedia search results!\n");
-            sb.AppendLine("-**$dadjoke** -> Gives a random Dad joke!\n");
-            sb.AppendLine("-**$iss** -> Get the current location of the International Space Station\n");
-            sb.AppendLine("-**$mars** -> Get pictures straight from the Mars Rover!\n");
-            sb.AppendLine("-**$ubdefine {word}** -> Get the Urban Dictionary definitions for words!\n");
-            sb.AppendLine("-**$yearfact {optional: number}** -> Get a fact from a year!\n");
-            sb.AppendLine("-**$mathfact {optional: number}** -> Get a random math fact!\n");
-            sb.AppendLine("-**$weather {city name}** -> Get the weather for your city!\n");
-            sb.AppendLine("-**$cat** -> Gives you a random cuddly kitten!\n");
-            sb.AppendLine("-**$fox** -> Enjoy a fluffy fox!\n");
-            sb.AppendLine("-**$dog** -> Doggies for everyone!\n");
-            sb.AppendLine("-**$cocktail** -> Get a random cocktail recipe!\n");
-            sb.AppendLine("-**$prices** -> Get the top 10 crytocurrency prices!\n");
-            sb.AppendLine("-**$recipe** -> Get a random recipe for dinner!\n");
-            sb.AppendLine("-**$catfact** -> Cat facts in the plenty!\n");
-            sb.AppendLine("-**$bored** -> Bored? Find an activity!\n");
-            sb.AppendLine("-**$plant {optional: name/genus}** -> Get a random plant, or search for a specific one!\n");
-            sb.AppendLine("-**$quotes** -> Get a motivational or inspirational quote for yourself!\n");
 
-            sb.AppendLine($"_(You can also use all these commands when direct messaging me!)_");
-            
+            sb.AppendLine("__**Basic Commands:**__");
+            sb.AppendLine("-**$about** -> Learn about me :)");
+            sb.AppendLine("-**$donate** -> Want to donate? Use this command!");
+            sb.AppendLine("-**$contact** -> Contact my developer! :email:");
+            sb.AppendLine("-**$test** -> Am I online, or am I not online? That is the question.");
+            sb.AppendLine("-**$changelog** -> See my changes!");
+
+            sb.AppendLine($"\n__**Commands:**__");
+            sb.AppendLine("-**$dadjoke** -> Gives a random Dad joke! :joy:");
+            sb.AppendLine("-**$iss** -> Get the current location of the International Space Station :rocket:");
+            sb.AppendLine("-**$mars** -> Get pictures straight from the Mars Rover! :rocket:");
+            sb.AppendLine("-**$cat** -> Gives you a random cuddly kitten! :cat:");
+            sb.AppendLine("-**$fox** -> Enjoy a fluffy fox! :fox:");
+            sb.AppendLine("-**$dog** -> Doggies for everyone! :dog:");
+            sb.AppendLine("-**$cocktail** -> Get a random cocktail recipe! :cocktail:");
+            sb.AppendLine("-**$prices** -> Get the top 10 crytocurrency prices! :dollar:");
+            sb.AppendLine("-**$recipe** -> Get a random recipe for dinner! :shallow_pan_of_food:");
+            sb.AppendLine("-**$catfact** -> Cat facts in the plenty! :cat:");
+            sb.AppendLine("-**$bored** -> Bored? Find an activity! :sleeping:");
+            sb.AppendLine("-**$quotes** -> Get a motivational or inspirational quote for yourself!");
+
+            sb.AppendLine($"\n__**Commands with optional queries:**__");
+            sb.AppendLine("-**$apod <optional: 'today'>** -> Get a random Astrology picture! :ringed_planet:");
+            sb.AppendLine("-**$yearfact <optional: number>** -> Get a fact from a year! :two::zero::two::one:");
+            sb.AppendLine("-**$mathfact <optional: number>** -> Get a random math fact! :1234:");
+            sb.AppendLine("-**$plant <optional: name/genus>** -> Get a random plant, or search for a specific one! :olive:");
+
+            sb.AppendLine($"\n__**Commands with queries:**__");
+            sb.AppendLine("-**$sdef <word>** -> Get the definition of a space word!");
+            sb.AppendLine("-**$wiki <word>** -> Get Wikipedia search results!");
+            sb.AppendLine("-**$weather <city name>** -> Get the weather for your city! :thunder_cloud_rain:");
+            sb.AppendLine("-**$ubdefine <word>** -> Get the Urban Dictionary definitions for words!");
 
             var embed = new EmbedBuilder()
             {
@@ -240,7 +245,10 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 Color = new Color(124, 108, 187)
             };
 
-            await ReplyAsync(null, false, embed.Build());
+            var questionMark = new Emoji(":question:");
+
+            await Context.User.SendMessageAsync(null, false, embed.Build());
+            await ReplyAsync("I've sent you a private message!");
             Console.Write($"{user} => $help"); // log to console
         }
 
@@ -255,9 +263,12 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine($"**Added:**");
             sb.AppendLine($"-$inspirationalquotes/$quotes");
             sb.AppendLine($"-$donate");
-            //sb.AppendLine($"- You can now try and talk to me in Direct messages. Not a lot to say though at the moment :(");
+            sb.AppendLine($"- You can now try and talk to me in Direct messages. Not a lot to say though at the moment :(");
             sb.AppendLine($"\n**Ammended:**");
             sb.AppendLine($"-$about");
+            sb.AppendLine($"-$help - Made it look pretty");
+            sb.AppendLine($"\n**Removed:**");
+            sb.AppendLine($"- Use of commands in Direct message due to conflicts within code (Might be re-added at later stage)");
             sb.AppendLine($"\nWant to see more? Try $help");
 
             embed.Title = "ChangeLog -";
@@ -317,7 +328,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var embed = new EmbedBuilder();
             var user = Context.User;
             sb.AppendLine($"[{user.Mention}]\n");
-            sb.AppendLine($"Want to add me to your server? Click here: [http://bit.ly/CamBot]");
+            sb.AppendLine($"Want to add me to your server? Click here: [http://bit.ly/Cambotapp]");
 
             embed.Title = "Add me to your server!";
             embed.Description = sb.ToString();
@@ -595,7 +606,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             Console.WriteLine($"{user.Username} => $ISS");
         }
 
-        [Command("Mars")]
+        [Command("Mars", RunMode = RunMode.Async)]
         public async Task getMarsRoverImage()
         {
             var startDate = new DateTime(2021, 02, 22);
