@@ -210,8 +210,6 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
         }
 
-        //
-
         public static async Task<HubbleDefinitionModel> hubbleDefinitionCall(string query = null)
         {
             string url = "";
