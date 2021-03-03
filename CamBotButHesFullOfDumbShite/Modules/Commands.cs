@@ -124,74 +124,74 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 if (b == true)
                 {
                     var r = replies[rnd.Next(replies.Count)].ToString();
-                    await msg.Channel.SendFileAsync(@"/home/pi/CamBot_Angry.png", $"Hey! {msg.Author.Mention}!\n{r}");
+                    await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Angry.png", $"Hey! {msg.Author.Mention}!\n{r}");
                     Console.WriteLine($"{msg.Author.Username} was rude to CamBot!");
                 }
                 else
                 {
                     if(msg.Author.Id == 336978114498527242) //Sandra
                     {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot_Happy.png", $"Bonjour Maman,\nje t'aime.\nWell... That's enough French. As you're my developer's wife, you're automatically my mother :heart:");
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", $"Bonjour Maman,\nje t'aime.\nWell... That's enough French. As you're my developer's wife, you're automatically my mother :heart:");
                         Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
 
                     }
                     else if(msg.Author.Id == 289047355498561538) // Cameron
                     {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot_Happy.png", "I also agree that junglers need to learn how to play their roles.");
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", "I also agree that junglers need to learn how to play their roles.");
                         Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
 
                     }
                     else if(msg.Author.Id == 186553383396704256) // Karl
                     {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot_Happy.png", "Hey Karl,\nYou really need to get off Genshin some time. Also, get gud at Pyke lulw");
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", "Hey Karl,\nYou really need to get off Genshin some time. Also, get gud at Pyke lulw");
                         Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
 
                     }
                     else if(msg.Author.Id == 522863720268038144) // Aidan
                     {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot_Happy.png", "The legendary Owner of Metro.\nIf you replied to your dms, that would be great. Also, thanks for making my face. Are you technically my dad? :heart:");
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", "The legendary Owner of Metro.\nIf you replied to your dms, that would be great. Also, thanks for making my face. Are you technically my dad? :heart:");
                         Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
 
                     }
                     else if(msg.Author.Id == 191999899573682187) // Jack
                     {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot_Happy.png", "The legendary quote God himself.\nCurrently trying to convince Cameron to allow me to add your quotes to me, but he's not budging. Apparently they're 'special' and only for my brother, JackBot. :smiling_face_with_tear: \nI listen to your music whilst nobody's using me. Thank you :heart:");
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", "The legendary quote God himself.\nCurrently trying to convince Cameron to allow me to add your quotes to me, but he's not budging. Apparently they're 'special' and only for my brother, JackBot. :smiling_face_with_tear: \nI listen to your music whilst nobody's using me. Thank you :heart:");
                         Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
 
                     }
                     else if(msg.Author.Id == 439548717570195466) // Manu
                     {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot_Blank.png", "Hey Manu, I've emailed Google to ask if I can use their new AI to teach you how to spell. For now, I'll let Cameron help you. :wink:");
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Blank.png", "Hey Manu, I've emailed Google to ask if I can use their new AI to teach you how to spell. For now, I'll let Cameron help you. :wink:");
                         Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
 
                     }
                     else if(msg.Author.Id == 169023834702348288) // Josh
                     {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot_Blank.png", "Uhm... Hi Mr Policeman Sir.\nI'm not doing anything naughty... I promise :smile: Cameron on the other hand... uhhh.");
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Blank.png", "Uhm... Hi Mr Policeman Sir.\nI'm not doing anything naughty... I promise :smile: Cameron on the other hand... uhhh.");
                         Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
 
                     }
                     else if(msg.Author.Id == 87026109027221504) // Ro
                     {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot_Happy.png", "Legend says... Ro invented the new meta of Stridebreaker Ornn.");
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", "Legend says... Ro invented the new meta of Stridebreaker Ornn.");
                         Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
 
                     }
                     else if(msg.Author.Id == 274508229331910656) // Imm
                     {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot_Happy.png", "Can you boost Cameron to Diamond? He needs it... I'm embarrassed. ");
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", "Can you boost Cameron to Diamond? He needs it... I'm embarrassed. ");
                         Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
 
                     }
                     else if(msg.Author.Id == 304643949027393537) // Alex
                     {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot_Blank.png", "It's pronounced LYCHEE (Lie-chee)");
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Blank.png", "It's pronounced LYCHEE (Lie-chee)");
                         Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
 
                     }
                     else if(msg.Author.Id == 105655241713713152) // Wils
                     {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot_Blank.png", "The fuhrer himself?! Messaging me?! What an honour!");
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Blank.png", "The fuhrer himself?! Messaging me?! What an honour!");
                         Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
 
                     }
@@ -202,7 +202,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     }
                     else
                     {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot_Happy.png", $"Hi there, {msg.Author.Mention}!\nI don't have many replies right now, but I am getting improved daily to make sure you can talk to me!\nIf you're lost, and want to see what I do, do **$help**\nHave a nice day!");
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", $"Hi there, {msg.Author.Mention}!\nI don't have many replies right now, but I am getting improved daily to make sure you can talk to me!\nIf you're lost, and want to see what I do, do **$help**\nHave a nice day!");
                         Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
                     }
                 }
@@ -725,7 +725,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 else
                 {
                     sb.AppendLine($"Something went wrong... Please try again.");
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
             }
@@ -774,7 +774,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 else
                 {
                     sb.AppendLine($"Something went wrong... Please try again.");
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
                 
@@ -836,7 +836,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 else
                 {
                     sb.AppendLine($"Something went wrong... Please try again.");
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
                 
@@ -930,7 +930,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 else
                 {
                     sb.AppendLine($"Something went wrong... Please try again.");
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
                
@@ -977,7 +977,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     else
                     {
                         sb.AppendLine($"Something went wrong... Please try again.");
-                        await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                        await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                         throw new Exception(response.ReasonPhrase);
                     }
                 }
@@ -985,7 +985,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             else
             {
                 sb.AppendLine("Please specify a city.");
-                await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
             }
             
 
@@ -1022,7 +1022,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
                 else
                 {
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", "Something went wrong... Please try again");
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", "Something went wrong... Please try again");
                     throw new Exception(response.ReasonPhrase);
                 }
             }
@@ -1058,7 +1058,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
                 else
                 {
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", "Something went wrong... Please try again");
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", "Something went wrong... Please try again");
                     throw new Exception(response.ReasonPhrase);
                 }
             }
@@ -1095,7 +1095,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
                 else
                 {
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", "Something went wrong... Please try again");
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", "Something went wrong... Please try again");
                     throw new Exception(response.ReasonPhrase);
                 }
             }
@@ -1160,7 +1160,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 else
                 {
                     sb.AppendLine($"Something went wrong... Please try again.");
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
             }
@@ -1206,7 +1206,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 else
                 {
                     sb.AppendLine($"Something went wrong... Please try again.");
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
             }
@@ -1250,7 +1250,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     if(amountOfChars > 1700)
                     {
                         sb.AppendLine($"Something went wrong... Please try again.");
-                        await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                        await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                     }
                     else
                     {
@@ -1297,7 +1297,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 else
                 {
                     sb.AppendLine($"Something went wrong... Please try again.");
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
             }
@@ -1339,7 +1339,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 else
                 {
                     sb.AppendLine($"Something went wrong... Please try again.");
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
             }
@@ -1383,7 +1383,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 else
                 {
                     sb.AppendLine($"Something went wrong... Please try again.");
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
             }
@@ -1451,7 +1451,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     else
                     {
                         sb.AppendLine($"Something went wrong... Please try again.");
-                        await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                        await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                         throw new Exception(response.ReasonPhrase);
                     }
                 }
@@ -1503,7 +1503,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     else
                     {
                         sb.AppendLine($"Something went wrong... Please try again.");
-                        await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                        await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                         throw new Exception(response.ReasonPhrase);
                     }
                 }
@@ -1560,7 +1560,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 else
                 {
                     sb.AppendLine($"Something went wrong... Please try again.");
-                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot_Sad.png", sb.ToString());
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
 
