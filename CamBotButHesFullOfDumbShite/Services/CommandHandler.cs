@@ -55,29 +55,22 @@ namespace CamBotButHesFullOfDumbShite.Services
             await _commands.ExecuteAsync(context, argPos, _services);
         }
 
-        public async Task CommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result) // Add some customissation and logging here
+        public async Task CommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result) // Add some customisation and logging here
         {
             
             if (!command.IsSpecified)
             {
-                Console.WriteLine($"{DateTime.Now} => {context.User.Username} => Command failed to execute");
+                Console.WriteLine($"{context.User.Username} => Command failed to execute");
                 return;
             }
 
             if (result.IsSuccess)
             {
-                Console.WriteLine($"{DateTime.Now} => {context.User.Username} => Executed a command");
+                Console.WriteLine($"{context.User.Username} => Executed a command");
                 return;
             }
 
-            var embed = new EmbedBuilder()
-            {
-                Title = "[Error] Halt!",
-                Description = "It's fine, I didn't like moving anyway...",
-                Color = new Color(255, 0, 0)
-            };
-
-            await context.Channel.SendMessageAsync(null, false, embed.Build());
+            await context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", "Error, something went wrong :(");
         }
     }
 }

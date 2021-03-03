@@ -35,11 +35,16 @@ using CamBotButHesFullOfDumbShite.CoinsApi;
 using CamBotButHesFullOfDumbShite.MealsApi;
 using CamBotButHesFullOfDumbShite.BoredApi;
 using CamBotButHesFullOfDumbShite.TrefleApi;
+using CamBotButHesFullOfDumbShite.InpirationalQuotesAPI;
 
 namespace CamBotButHesFullOfDumbShite.Modules
 {
-    
-    public class Commands : ModuleBase
+
+    // Add BBC podcasts
+    // Research papers 
+    // Swear at Cambot, you end up with ANGRY face
+
+    public class Commands : ModuleBase // _client.MessageReceived > Add a way for CamBot to respond to dms
     {
         private DiscordSocketClient _client;
         private readonly CommandService _commands;
@@ -52,7 +57,68 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var client = services.GetRequiredService<DiscordSocketClient>();
             _services = services;
             _client = client;
+            _client.MessageReceived += MessageReceivedAsync;
             API_Stuff.APIHelper.InitialiseClient();
+        }
+
+        public async Task MessageReceivedAsync(SocketMessage msg)
+        {
+            var rnd = new Random();
+            List<string> badWords = new List<string>
+            {
+                "fuck",
+                "fuck you",
+                "shit",
+                "piss off",
+                "asshole",
+                "dick head",
+                "dickhead",
+                "faggot",
+                "son of a bitch",
+                "bastard",
+                "bitch",
+                "cunt",
+                "bollocks",
+                "choad",
+                "chode",
+                "twat",
+                "motherfucker",
+                "piece of shit",
+                "fucker",
+                "fucking idiot",
+                "shite"
+            };
+
+            List<string> replies = new List<string>
+            {
+                "That's not very nice!",
+                "Take that back!",
+                "Don't be rude!",
+                "Please be nice :(",
+                "There's no need to be rude!",
+                "How about.... no.",
+                "I'm unhappy.",
+                "Watch your language!",
+                "How dare you!",
+                "I'll get my developer on you!"
+            };
+
+            if (msg.Source != MessageSource.User) return;
+
+            if(msg.Channel is SocketDMChannel)
+            {
+                foreach(string x in badWords)
+                {
+                    if (msg.Content.ToLower().Contains(x))
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Angry.png", rnd.Next(replies.Count).ToString());
+                    }
+                    else
+                    {
+                        await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", $"Hi there, {msg.Author.Mention}!\nI don't have many replies right now, but I am getting improved daily to make sure you can talk to me!\nIf you're lost, and want to see what I do, do **$help**\nHave a nice day!");
+                    }
+                }
+            }
         }
 
         public static async Task<HubbleDefinitionModel> hubbleDefinitionCall(string query = null)
@@ -127,6 +193,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine("-**$donate** -> Want to donate? Use this command!\n");
             sb.AppendLine("-**$contact** -> Contact my developer!\n");  
             sb.AppendLine("-**$test** -> Am I online, or am I not online? That is the question.\n");
+            sb.AppendLine("-**Changelog** -> See my changes!");
             sb.AppendLine("-**$apod {optional: 'today'}** -> Get a random Astrology picture!\n");
             sb.AppendLine("-**$sdef {word}** -> Get the definition of a space word!\n");
             sb.AppendLine("-**$wiki {word}** -> Get Wikipedia search results!\n");
@@ -146,18 +213,46 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine("-**$catfact** -> Cat facts in the plenty!\n");
             sb.AppendLine("-**$bored** -> Bored? Find an activity!\n");
             sb.AppendLine("-**$plant {optional: name/genus}** -> Get a random plant, or search for a specific one!\n");
+            sb.AppendLine("-**$quotes** -> Get a motivational or inspirational quote for yourself!\n");
+
+            sb.AppendLine($"_(You can also use all these commands when direct messaging me!)_");
             
 
             var embed = new EmbedBuilder()
             {
                 Title = "Help from CamBot",
                 Description = sb.ToString(),
-                Color = new Color(255, 255, 0)
+                Color = new Color(124, 108, 187)
             };
 
             await ReplyAsync(null, false, embed.Build());
             Console.Write($"{user} => $help"); // log to console
         }
+
+        [Command("changelog")]
+        [Alias("change")]
+        public async Task getChangeLog()
+        {
+            var sb = new StringBuilder();
+            var embed = new EmbedBuilder();
+            var user = Context.User;
+            sb.AppendLine($"**March 2nd -**\n");
+            sb.AppendLine($"**Added:**");
+            sb.AppendLine($"-$inspirationalquotes/$quotes");
+            sb.AppendLine($"-$donate");
+            sb.AppendLine($"- You can now try and talk to me in Direct messages. Not a lot to say though at the moment :(");
+            sb.AppendLine($"\n**Ammended:**");
+            sb.AppendLine($"-$about");
+            sb.AppendLine($"\nWant to see more? Try $help");
+
+            embed.Title = "ChangeLog -";
+            embed.Description = sb.ToString();
+            embed.Color = new Color(124, 108, 187);
+
+            await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Username} => $changelog");
+        }
+
 
         [Command("donate")]
         public async Task getDonation()
@@ -172,6 +267,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             embed.Title = "Donate";
             embed.Description = sb.ToString();
+            embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} -> $donate");
@@ -193,7 +289,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             embed.Title = "Contact -";
             embed.Description = sb.ToString();
-            embed.Color = new Color(64, 224, 208);
+            embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
         }
@@ -206,10 +302,11 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var embed = new EmbedBuilder();
             var user = Context.User;
             sb.AppendLine($"[{user.Mention}]\n");
-            sb.AppendLine($"Want to add the bot to your own server? Click this link: [http://bit.ly/CamBot]");
+            sb.AppendLine($"Want to add me to your server? Click here: [http://bit.ly/CamBot]");
 
-            embed.Title = "Add Cambot to your server!";
+            embed.Title = "Add me to your server!";
             embed.Description = sb.ToString();
+            embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} => $link");
@@ -229,12 +326,12 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine("I am currently in beta, and therefore I am not the final product that the world desires, but alas, my developer is working hard everyday to make sure I am up to date and getting new creative ways to feed you information.");
             sb.AppendLine("\nIf you're clueless as to how I work, do **$help** and learn my commands, you might enjoy some of them!");
             sb.AppendLine("If you wish to contact my developer, use the **$contact** command.\n");
-            sb.AppendLine($"Want to add the bot to your own server? Click this link: [http://bit.ly/CamBot]");
+            sb.AppendLine($"Want to add me to your server? Click this link: [http://bit.ly/CamBot]");
             sb.AppendLine("\nHave fun!");
 
             embed.Title = "About Cambot!";
             embed.Description = sb.ToString();
-            embed.Color = new Color(64, 224, 238);
+            embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} => $about");
@@ -471,7 +568,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             var position = await GetLongLatISS();
 
-            sb.AppendLine("**At time: **" + DateTime.Now.ToString("dd/MM/yyy") + " BST");
+            sb.AppendLine("**At time: **" + DateTime.Now.ToString("dd/MM/yyy - h/m") + " BST");
             sb.AppendLine();
             sb.AppendLine($"**Longitude:** {position.longitude.ToString()}");
             sb.AppendLine($"**Latitude:** {position.latitude.ToString()}");
@@ -514,22 +611,26 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     sb.AppendLine($"**Sol:** {sol}");
                     sb.AppendLine($"**Image ID:** {des.photos[r].id.ToString("###,###,###")}");
                     sb.AppendLine();
+
+                    var embed = new EmbedBuilder()
+                    {
+                        Title = "Images straight from Mars!",
+                        Description = sb.ToString(),
+                        ImageUrl = image.ToString(),
+                        Color = new Color(255, 128, 0)
+                    };
+
+                    await ReplyAsync(null, false, embed.Build());
                 }
                 else
                 {
+                    sb.AppendLine($"Something went wrong... Please try again.");
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
             }
 
-            var embed = new EmbedBuilder()
-            {
-                Title = "Images straight from Mars!",
-                Description = sb.ToString(),
-                ImageUrl = image.ToString(),
-                Color = new Color(255, 128, 0)
-            };
-
-            await ReplyAsync(null, false, embed.Build());
+            
             Console.WriteLine($"{user.Username} => $mars");
         }
 
@@ -553,23 +654,33 @@ namespace CamBotButHesFullOfDumbShite.Modules
             };
             using (var response = await client.SendAsync(request))
             {
-                response.EnsureSuccessStatusCode();
-                UrbanDictionaryRoot def = JsonConvert.DeserializeObject<UrbanDictionaryRoot>(await response.Content.ReadAsStringAsync());
-                for(int i = 0; i < def.list.Count; i++)
+                if (response.IsSuccessStatusCode)
                 {
-                    string definition = def.list[i].definition;
-                    var removedLeftBrackets = definition.Replace('[', ' ');
-                    var removedRightBrackets = removedLeftBrackets.Replace(']', ' ');
-                    sb.AppendLine(removedRightBrackets);
+                    UrbanDictionaryRoot def = JsonConvert.DeserializeObject<UrbanDictionaryRoot>(await response.Content.ReadAsStringAsync());
+                    for (int i = 0; i < def.list.Count; i++)
+                    {
+                        string definition = def.list[i].definition;
+                        var removedLeftBrackets = definition.Replace('[', ' ');
+                        var removedRightBrackets = removedLeftBrackets.Replace(']', ' ');
+                        sb.AppendLine(removedRightBrackets);
+
+                        embed.Title = $"Urban Dictionary definition for: {query}";
+                        embed.Description = sb.ToString();
+                        embed.Color = new Color(0, 0, 128);
+
+                        await ReplyAsync(user.Mention, false, embed.Build());
+                    }
+                }
+                else
+                {
+                    sb.AppendLine($"Something went wrong... Please try again.");
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
+                    throw new Exception(response.ReasonPhrase);
                 }
                 
+                
             }
-
-            embed.Title = $"Urban Dictionary definition for: {query}";
-            embed.Description = sb.ToString();
-            embed.Color = new Color(0, 0, 128);
-
-            await ReplyAsync(user.Mention, false, embed.Build());
+            
             Console.WriteLine($"{user.Username} => $ubdefine");
         }
 
@@ -607,20 +718,30 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             using (var response = await client.SendAsync(request))
             {
-                response.EnsureSuccessStatusCode();
-                NumbersApiRoot num = JsonConvert.DeserializeObject<NumbersApiRoot>(await response.Content.ReadAsStringAsync());
-                sb.AppendLine($"**Year**: {num.number}");
-                sb.AppendLine();
-                sb.AppendLine($"**Found?**: {num.found}");
-                sb.AppendLine();
-                sb.AppendLine($"**Fact**: {num.text}");
+                if (response.IsSuccessStatusCode)
+                {
+                    NumbersApiRoot num = JsonConvert.DeserializeObject<NumbersApiRoot>(await response.Content.ReadAsStringAsync());
+                    sb.AppendLine($"**Year**: {num.number}");
+                    sb.AppendLine();
+                    sb.AppendLine($"**Found?**: {num.found}");
+                    sb.AppendLine();
+                    sb.AppendLine($"**Fact**: {num.text}");
+
+                    embed.Title = $"Fact about the year {query}:";
+                    embed.Description = sb.ToString();
+                    embed.Color = new Color(255, 255, 0);
+
+                    await ReplyAsync(user.Mention, false, embed.Build());
+                }
+                else
+                {
+                    sb.AppendLine($"Something went wrong... Please try again.");
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
+                    throw new Exception(response.ReasonPhrase);
+                }
+                
             }
 
-            embed.Title = $"Fact about the year {query}:";
-            embed.Description = sb.ToString();
-            embed.Color = new Color(255, 255, 0);
-
-            await ReplyAsync(user.Mention, false, embed.Build());
             Console.WriteLine($"{user.Username} => $yearfact");
         }
 
@@ -659,47 +780,63 @@ namespace CamBotButHesFullOfDumbShite.Modules
             };
             using (var response = await client.SendAsync(request))
             {
-                response.EnsureSuccessStatusCode();
-                MathsApiRoot mathf = JsonConvert.DeserializeObject<MathsApiRoot>(await response.Content.ReadAsStringAsync());
+                if (response.IsSuccessStatusCode)
+                {
+                    MathsApiRoot mathf = JsonConvert.DeserializeObject<MathsApiRoot>(await response.Content.ReadAsStringAsync());
 
-                if(mathf.found == true)
-                {
-                    sbTitle.AppendLine($"Math facts:");
-                    sb.AppendLine($"**Number:** {mathf.number}");
-                    sb.AppendLine();
-                    sb.AppendLine($"**Found?:** {mathf.found}");
-                    sb.AppendLine();
-                    sb.AppendLine($"**Fact:** {mathf.text}");
-                }
-                else
-                {
-                    if(mathf.text == "a number for which we're missing a fact (submit one to numbersapi at google mail!)")
+                    if (mathf.found == true)
                     {
-                        sbTitle.AppendLine($"Uh oh...");
-                        sb.AppendLine($"**Number:** {mathf.number}");
-                        sb.AppendLine();
-                        sb.AppendLine($"**Found?:** {mathf.found}");
-                        sb.AppendLine();
-                        sb.AppendLine($"**Fact:** A Number for which we're missing a fact :(");
-                    }
-                    else
-                    {
-                        sbTitle.AppendLine($"Uh oh...");
+                        sbTitle.AppendLine($"Math facts:");
                         sb.AppendLine($"**Number:** {mathf.number}");
                         sb.AppendLine();
                         sb.AppendLine($"**Found?:** {mathf.found}");
                         sb.AppendLine();
                         sb.AppendLine($"**Fact:** {mathf.text}");
+
+                        embed.Title = sbTitle.ToString();
+                        embed.Description = sb.ToString();
+                        embed.Color = new Color(255, 255, 0);
+
+                        await ReplyAsync(user.Mention, false, embed.Build());
                     }
-                    
+                    else
+                    {
+                        if (mathf.text == "a number for which we're missing a fact (submit one to numbersapi at google mail!)")
+                        {
+                            sbTitle.AppendLine($"Uh oh...");
+                            sb.AppendLine($"**Number:** {mathf.number}");
+                            sb.AppendLine();
+                            sb.AppendLine($"**Found?:** {mathf.found}");
+                            sb.AppendLine();
+                            sb.AppendLine($"**Fact:** A Number for which we're missing a fact :(");
+                        }
+                        else
+                        {
+                            sbTitle.AppendLine($"Uh oh...");
+                            sb.AppendLine($"**Number:** {mathf.number}");
+                            sb.AppendLine();
+                            sb.AppendLine($"**Found?:** {mathf.found}");
+                            sb.AppendLine();
+                            sb.AppendLine($"**Fact:** {mathf.text}");
+                        }
+
+                        embed.Title = sbTitle.ToString();
+                        embed.Description = sb.ToString();
+                        embed.Color = new Color(255, 255, 0);
+
+                        await ReplyAsync(user.Mention, false, embed.Build());
+                    }
                 }
+                else
+                {
+                    sb.AppendLine($"Something went wrong... Please try again.");
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
+                    throw new Exception(response.ReasonPhrase);
+                }
+               
             }
 
-            embed.Title = sbTitle.ToString();
-            embed.Description = sb.ToString();
-            embed.Color = new Color(255, 255, 0);
-
-            await ReplyAsync(user.Mention, false, embed.Build());
+            
             Console.WriteLine($"{user.Username} => $mathfact");
         }
 
@@ -730,27 +867,29 @@ namespace CamBotButHesFullOfDumbShite.Modules
                         sb.AppendLine($"**Humidity:** {owm.main.humidity}\n");
                         sb.AppendLine($"**Wind Speed:** {owm.wind.speed}mph\n");
                         sb.AppendLine($"**Wind direction:** {owm.wind.deg}°\n");
+
+                        embed.Title = sbTitle.ToString();
+                        embed.Description = sb.ToString();
+                        embed.Color = new Color(135, 206, 235);
+
+                        await ReplyAsync(user.Mention, false, embed.Build());
                     }
                     else
                     {
-                        sbTitle.AppendLine("Uh oh...");
-                        sb.AppendLine("Something went wrong...");
-                        throw new Exception(response.ReasonPhrase); 
+                        sb.AppendLine($"Something went wrong... Please try again.");
+                        await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
+                        throw new Exception(response.ReasonPhrase);
                     }
                 }
             }
             else
             {
-                sbTitle.AppendLine("Uh oh...");
                 sb.AppendLine("Please specify a city.");
+                await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
             }
             
 
-            embed.Title = sbTitle.ToString();
-            embed.Description = sb.ToString();
-            embed.Color = new Color(135, 206, 235);
-
-            await ReplyAsync(user.Mention, false, embed.Build());
+            
             Console.WriteLine($"{user.Username} => $weather {query}");
         }
 
@@ -775,16 +914,19 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 {
                     CatsRoot cats = JsonConvert.DeserializeObject<CatsRoot>(await response.Content.ReadAsStringAsync());
                     caturl = $"{cats.file}";
+
+                    embed.ImageUrl = caturl;
+                    embed.Color = new Color(r, g, b);
+
+                    await ReplyAsync($"{user.Mention} wants to see cuteness!", false, embed.Build());
                 }
                 else
                 {
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", "Something went wrong... Please try again");
                     throw new Exception(response.ReasonPhrase);
                 }
             }
-            embed.ImageUrl = caturl;
-            embed.Color = new Color(r, g, b);
-
-            await ReplyAsync($"{user.Mention} wants to see cuteness!", false, embed.Build());
+            
             Console.WriteLine($"{user.Username} => $cat");
         }
 
@@ -808,17 +950,20 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 {
                     FoxRoot fox = JsonConvert.DeserializeObject<FoxRoot>(await response.Content.ReadAsStringAsync());
                     foxurl = $"{fox.image}";
+
+                    embed.ImageUrl = foxurl;
+                    embed.Color = new Color(r, g, b);
+
+                    await ReplyAsync($"A cuddly fox for {user.Mention}", false, embed.Build());
                 }
                 else
                 {
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", "Something went wrong... Please try again");
                     throw new Exception(response.ReasonPhrase);
                 }
             }
 
-            embed.ImageUrl = foxurl;
-            embed.Color = new Color(r, g, b);
-
-            await ReplyAsync($"A cuddly fox for {user.Mention}", false, embed.Build());
+            
             Console.WriteLine($"{user.Mention} => $fox");
         }
 
@@ -842,18 +987,20 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 {
                     DogRoot dog = JsonConvert.DeserializeObject<DogRoot>(await response.Content.ReadAsStringAsync());
                     dogurl = $"{dog.url}";
+
+                    embed.ImageUrl = dogurl;
+                    embed.Color = new Color(r, g, b);
+
+                    await ReplyAsync($"Fluffball delivery for: {user.Mention}", false, embed.Build());
                 }
                 else
                 {
-                    
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", "Something went wrong... Please try again");
                     throw new Exception(response.ReasonPhrase);
                 }
             }
 
-            embed.ImageUrl = dogurl;
-            embed.Color = new Color(r, g, b);
-
-            await ReplyAsync($"Fluffball delivery for: {user.Mention}", false, embed.Build());
+            
             Console.WriteLine($"{user.Username} => $dog");
         }
 
@@ -902,24 +1049,22 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     sb.AppendLine($"{cocktail.drinks[0].strMeasure14} {cocktail.drinks[0].strIngredient14}");
                     sb.AppendLine($"{cocktail.drinks[0].strMeasure15} {cocktail.drinks[0].strIngredient15}");
                     imageurl = cocktail.drinks[0].strDrinkThumb;
+
+                    embed.Title = sbTitle.ToString();
+                    embed.Description = sb.ToString();
+                    embed.ImageUrl = imageurl;
+                    embed.Color = new Color(r, g, b);
+
+                    await ReplyAsync(null, false, embed.Build());
                 }
                 else
                 {
-                    sbTitle.AppendLine("Uh oh...");
-                    sb.AppendLine("Something went wrong...");
-                    r = 255;
-                    g = 0;
-                    b = 0;
-                    throw new Exception(response.ReasonPhrase);      
+                    sb.AppendLine($"Something went wrong... Please try again.");
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
+                    throw new Exception(response.ReasonPhrase);
                 }
             }
 
-            embed.Title = sbTitle.ToString();
-            embed.Description = sb.ToString();
-            embed.ImageUrl = imageurl;
-            embed.Color = new Color(r, g, b);
-
-            await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} => $cocktail {sbTitle}");
         }
 
@@ -951,25 +1096,22 @@ namespace CamBotButHesFullOfDumbShite.Modules
                         sb.AppendLine($"**24h Change:** {coin.data[i].percent_change_24h}%\n");
                     }
                     sbTitle.AppendLine("Top 10 cryptocurrency prices!");
+
+                    embed.Title = sbTitle.ToString();
+                    embed.Description = sb.ToString();
+                    embed.Color = new Color(r, g, b);
+
+                    await ReplyAsync(null, false, embed.Build());
                 }
                 else
                 {
-                    sbTitle.AppendLine("Uh oh...");
-                    sb.AppendLine("Something went wrong... Please try again.");
-                    r = 255;
-                    g = 0;
-                    b = 0;
+                    sb.AppendLine($"Something went wrong... Please try again.");
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
             }
 
 
-
-            embed.Title = sbTitle.ToString();
-            embed.Description = sb.ToString();
-            embed.Color = new Color(r, g, b);
-
-            await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} => $prices");
         }
 
@@ -1007,9 +1149,8 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
                     if(amountOfChars > 1700)
                     {
-                        sbTitle.AppendLine("Error");
-                        sb.AppendLine($"Uh oh...");
-                        sb.AppendLine($"An error occurred... Please try again.");
+                        sb.AppendLine($"Something went wrong... Please try again.");
+                        await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
                     }
                     else
                     {
@@ -1042,27 +1183,26 @@ namespace CamBotButHesFullOfDumbShite.Modules
                         sb.AppendLine($"{meal.meals[0].strMeasure20} {meal.meals[0].strIngredient20}");
                         imageurl = meal.meals[0].strMealThumb;
                         footerText = meal.meals[0].strSource;
+
+                        embed.Title = sbTitle.ToString();
+                        embed.Description = sb.ToString();
+                        embed.ImageUrl = imageurl;
+                        embed.Color = new Color(r, g, b);
+                        embed.Url = $"{footerText}";
+
+                        await ReplyAsync(null, false, embed.Build());
                     }  
                     
                 }
                 else
                 {
-                    sbTitle.AppendLine("Uh oh...");
-                    sb.AppendLine("Something went wrong...");
-                    r = 255;
-                    g = 0;
-                    b = 0;
+                    sb.AppendLine($"Something went wrong... Please try again.");
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
             }
 
-            embed.Title = sbTitle.ToString();
-            embed.Description = sb.ToString();
-            embed.ImageUrl = imageurl;
-            embed.Color = new Color(r, g, b);
-            embed.Url = $"{footerText}";
-
-            await ReplyAsync(null, false, embed.Build());
+            
             Console.WriteLine($"{user.Username} => $recipe");
         }
 
@@ -1088,23 +1228,22 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     CatFactsRoot cat = JsonConvert.DeserializeObject<CatFactsRoot>(await response.Content.ReadAsStringAsync());
                     sbTitle.AppendLine("Cat fact!");
                     sb.AppendLine($"**Fact:** {cat.fact}");
+
+
+                    embed.Title = sbTitle.ToString();
+                    embed.Description = sb.ToString();
+                    embed.Color = new Color(r, g, b);
+
+                    await ReplyAsync(null, false, embed.Build());
                 }
                 else
                 {
-                    sbTitle.AppendLine("Uh oh...");
-                    sb.AppendLine("Something went wrong... Please try again.");
-                    r = 255;
-                    g = 0;
-                    b = 0;
+                    sb.AppendLine($"Something went wrong... Please try again.");
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
             }
 
-            embed.Title = sbTitle.ToString();
-            embed.Description = sb.ToString();
-            embed.Color = new Color(r, g, b);
-
-            await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} => $catfact");
         }
 
@@ -1133,27 +1272,26 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     sb.AppendLine($"**Activity:** {bored.activity}");
                     sb.AppendLine($"**Type:** {bored.type}");
                     sb.AppendLine($"**Participants:** {bored.participants}");
+
+
+                    embed.Title = sbTitle.ToString();
+                    embed.Description = sb.ToString();
+                    embed.Color = new Color(r, g, b);
+
+                    await ReplyAsync(null, false, embed.Build());
                 }
                 else
                 {
-                    sbTitle.AppendLine("Uh oh...");
-                    sb.AppendLine("Something went wrong... Please try again");
-                    r = 255;
-                    g = 0;
-                    b = 0;
+                    sb.AppendLine($"Something went wrong... Please try again.");
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
             }
 
-            embed.Title = sbTitle.ToString();
-            embed.Description = sb.ToString();
-            embed.Color = new Color(r, g, b);
-
-            await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} => $bored");
         }
 
-        [Command("plants")]
+        [Command("plants")] // Search through google images
         [Alias("plant")]
         public async Task getPlantsAsync([Remainder]string query = null)
         {
@@ -1202,14 +1340,18 @@ namespace CamBotButHesFullOfDumbShite.Modules
                             sb.AppendLine($"**Image Url:** {tproot.data[i].image_url}.jpg");
                             imageurl = $"{tproot.data[i].image_url}.jpg";
                         }
+
+                        embed.Title = sbTitle.ToString();
+                        embed.Description = sb.ToString();
+                        embed.ImageUrl = imageurl;
+                        embed.Color = new Color(r, g, b);
+
+                        await ReplyAsync(null, false, embed.Build());
                     }
                     else
                     {
-                        sbTitle.AppendLine($"Uh oh...");
-                        sb.AppendLine("Something went wrong... Please try again.");
-                        r = 255;
-                        g = 0;
-                        b = 0;
+                        sb.AppendLine($"Something went wrong... Please try again.");
+                        await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
                         throw new Exception(response.ReasonPhrase);
                     }
                 }
@@ -1249,26 +1391,82 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
                         sb.AppendLine("Not what you're looking for? Try specifying your query.");
 
+
+                        embed.Title = sbTitle.ToString();
+                        embed.Description = sb.ToString();
+                        embed.ImageUrl = imageurl;
+                        embed.Color = new Color(r, g, b);
+
+                        await ReplyAsync(null, false, embed.Build());
+
                     }
                     else
                     {
-                        sbTitle.AppendLine($"Uh oh...");
-                        sb.AppendLine("Something went wrong, or your query does not match any plants. Please try again, or try a different query.");
-                        r = 255;
-                        g = 0;
-                        b = 0;
+                        sb.AppendLine($"Something went wrong... Please try again.");
+                        await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
                         throw new Exception(response.ReasonPhrase);
                     }
                 }
             }
 
-            embed.Title = sbTitle.ToString();
-            embed.Description = sb.ToString();
-            embed.ImageUrl = imageurl;
-            embed.Color = new Color(r, g, b);
-
-            await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} => $plants");
+        }
+
+        [Command("inspirationalquotes")]
+        [Alias("quotes", "inspiration")]
+        public async Task getInspirationalQuotesAsync()
+        {
+            var embed = new EmbedBuilder();
+            var sbTitle = new StringBuilder();
+            var sb = new StringBuilder();
+            var user = Context.User;
+            var rnd = new Random();
+            var imageurl = string.Empty;
+            var r = rnd.Next(0, 256);
+            var g = rnd.Next(0, 256);
+            var b = rnd.Next(0, 256);
+            var token = _config["RapidApiKey"];
+
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://healthruwords.p.rapidapi.com/v1/quotes/?maxR=1&size=medium"),
+                Headers =
+                {
+                    { "x-rapidapi-key", $"{token}" },
+                    { "x-rapidapi-host", "healthruwords.p.rapidapi.com" },
+                },
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    var quote = JsonConvert.DeserializeObject<List<QuotesRoot>>(await response.Content.ReadAsStringAsync());
+
+
+                    imageurl = quote[0].media;
+                    sbTitle.AppendLine($"Quote No. {quote[0].id}: {quote[0].title}");
+                    sb.AppendLine($"[{user.Mention}]\n");
+
+                    embed.Title = sbTitle.ToString();
+                    embed.Description = sb.ToString();
+                    embed.ImageUrl = imageurl;
+                    embed.Color = new Color(r, g, b);
+
+                    await ReplyAsync(null, false, embed.Build());
+                }
+                else
+                {
+                    sb.AppendLine($"Something went wrong... Please try again.");
+                    await Context.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Sad.png", sb.ToString());
+                    throw new Exception(response.ReasonPhrase);
+                }
+
+            }
+            
+            Console.WriteLine($"{user.Username} => $quotes");
         }
     }
 }
