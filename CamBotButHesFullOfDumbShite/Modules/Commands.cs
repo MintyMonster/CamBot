@@ -104,6 +104,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             };
 
             if (msg.Source != MessageSource.User) return;
+            if (!(msg is SocketUserMessage message)) return;
 
             if(msg.Channel is SocketDMChannel)
             {
