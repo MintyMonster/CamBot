@@ -57,11 +57,11 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var client = services.GetRequiredService<DiscordSocketClient>();
             _services = services;
             _client = client;
-            _client.MessageReceived += MessageReceivedAsync;
+            //_client.MessageReceived += MessageReceivedAsync;
             API_Stuff.APIHelper.InitialiseClient();
         }
 
-        public async Task MessageReceivedAsync(SocketMessage msg)
+        /*public async Task MessageReceivedAsync(SocketMessage msg)
         {
             var rnd = new Random();
             List<string> badWords = new List<string>
@@ -123,17 +123,18 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 if (b == true)
                 {
                     var r = replies[rnd.Next(replies.Count)].ToString();
-                    await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Angry.png", r);
+                    await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Angry.png", $"Hey! {msg.Author.Username}!\n{r}");
                     Console.WriteLine($"{msg.Author.Username} was rude to CamBot!");
                 }
                 else
                 {
-                    await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", $"Hi there, {msg.Author.Mention}!\nI don't have many replies right now, but I am getting improved daily to make sure you can talk to me!\nIf you're lost, and want to see what I do, do **$help**\nHave a nice day!");
+                    await msg.Channel.SendMessageAsync("hi");
+                    //await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", $"Hi there, {msg.Author.Mention}!\nI don't have many replies right now, but I am getting improved daily to make sure you can talk to me!\nIf you're lost, and want to see what I do, do **$help**\nHave a nice day!");
                     Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
                 }
 
             }
-        }
+        }*/
 
         public static async Task<HubbleDefinitionModel> hubbleDefinitionCall(string query = null)
         {

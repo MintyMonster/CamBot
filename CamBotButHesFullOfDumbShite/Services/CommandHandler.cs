@@ -41,6 +41,8 @@ namespace CamBotButHesFullOfDumbShite.Services
                 return;
             }
 
+            if (rawMessage.Channel is SocketDMChannel) return;
+
             if (message.Source != MessageSource.User)
             {
                 return;
