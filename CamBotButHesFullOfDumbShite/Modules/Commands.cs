@@ -86,7 +86,13 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 "piece of shit",
                 "fucker",
                 "fucking idiot",
-                "shite"
+                "shite",
+                "fkin",
+                "fk",
+                "fking",
+                "fuk",
+                "phuk",
+                "phuck"
             };
 
             List<string> replies = new List<string>
@@ -105,28 +111,21 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             if (msg.Source != MessageSource.User) return;
             if (!(msg is SocketUserMessage message)) return;
+            //if (msg.Author.Id == _client.CurrentUser.Id) return;
 
             if(msg.Channel is SocketDMChannel)
             {
-                if (!message.Author.IsBot)
+                bool b = badWords.Any(s => msg.Content.ToLower().Contains(s));
+                if (b == true)
                 {
-                    foreach (string x in badWords)
-                    {
-                        if (msg.Content.ToLower().Contains(x))
-                        {
-                            await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Angry.png", rnd.Next(replies.Count).ToString());
-                        }
-                        else
-                        {
-                            await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", $"Hi there, {msg.Author.Mention}!\nI don't have many replies right now, but I am getting improved daily to make sure you can talk to me!\nIf you're lost, and want to see what I do, do **$help**\nHave a nice day!");
-                        }
-                    }
+                    await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Angry.png", rnd.Next(replies.Count).ToString());
                 }
                 else
                 {
-                    return;
+                    //await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Happy.png", $"Hi there, {msg.Author.Mention}!\nI don't have many replies right now, but I am getting improved daily to make sure you can talk to me!\nIf you're lost, and want to see what I do, do **$help**\nHave a nice day!");
+                    await msg.Channel.SendMessageAsync("Hi there!");
                 }
-                
+
             }
         }
 
