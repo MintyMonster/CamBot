@@ -123,7 +123,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 if (b == true)
                 {
                     var r = replies[rnd.Next(replies.Count)].ToString();
-                    await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Angry.png", $"Hey! {msg.Author.Username}!\n{r}");
+                    await msg.Channel.SendFileAsync(@"/home/pi/CamBotButHesFullOfDumbShite/CamBot_Angry.png", $"Hey! {msg.Author.Mention}!\n{r}");
                     Console.WriteLine($"{msg.Author.Username} was rude to CamBot!");
                 }
                 else
