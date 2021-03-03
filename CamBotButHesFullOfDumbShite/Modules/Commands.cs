@@ -255,7 +255,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine($"**Added:**");
             sb.AppendLine($"-$inspirationalquotes/$quotes");
             sb.AppendLine($"-$donate");
-            sb.AppendLine($"- You can now try and talk to me in Direct messages. Not a lot to say though at the moment :(");
+            //sb.AppendLine($"- You can now try and talk to me in Direct messages. Not a lot to say though at the moment :(");
             sb.AppendLine($"\n**Ammended:**");
             sb.AppendLine($"-$about");
             sb.AppendLine($"\nWant to see more? Try $help");
