@@ -285,7 +285,6 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             sb.AppendLine("__**Basic Commands:**__");
             sb.AppendLine("-**$about** -> Learn about me :)");
-            sb.AppendLine("-**$donate** -> Want to donate? Use this command!");
             sb.AppendLine("-**$contact** -> Contact my developer! :email:");
             sb.AppendLine("-**$test** -> Am I online, or am I not online? That is the question.");
             sb.AppendLine("-**$changelog** -> See my changes!");
