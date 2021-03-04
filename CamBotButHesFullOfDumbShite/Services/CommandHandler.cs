@@ -63,12 +63,16 @@ namespace CamBotButHesFullOfDumbShite.Services
             if (!command.IsSpecified)
             {
                 Console.WriteLine($"{context.User.Username} => Command failed to execute");
+                var cross = new Emoji("\u274C");
+                await context.Message.AddReactionAsync(cross);
                 return;
             }
 
             if (result.IsSuccess)
             {
                 Console.WriteLine($"{context.User.Username} => Executed a command");
+                var checkMark = new Emoji("\u2705");
+                await context.Message.AddReactionAsync(checkMark);
                 return;
             }
 

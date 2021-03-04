@@ -61,157 +61,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             API_Stuff.APIHelper.InitialiseClient();
         }
 
-        /*public async Task MessageReceivedAsync(SocketMessage msg)
-        {
-            var rnd = new Random();
-            List<string> badWords = new List<string>
-            {
-                "fuck",
-                "fuck you",
-                "shit",
-                "piss off",
-                "asshole",
-                "dick head",
-                "dickhead",
-                "faggot",
-                "son of a bitch",
-                "bastard",
-                "bitch",
-                "cunt",
-                "bollocks",
-                "choad",
-                "chode",
-                "twat",
-                "motherfucker",
-                "piece of shit",
-                "fucker",
-                "fucking idiot",
-                "shite",
-                "fkin",
-                "fk",
-                "fking",
-                "fuk",
-                "phuk",
-                "phuck"
-            };
-
-            List<string> replies = new List<string>
-            {
-                "That's not very nice!",
-                "Take that back!",
-                "Don't be rude!",
-                "Please be nice :(",
-                "There's no need to be rude!",
-                "How about.... no.",
-                "I'm unhappy.",
-                "Watch your language!",
-                "How dare you!",
-                "I'll get my developer on you!"
-            };
-
-            var argPos = 0;
-            char prefix = '$';
-
-            if (msg.Source != MessageSource.User) return;
-            if (!(msg is SocketUserMessage message)) return;
-            if (message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos)) return;
-
-            if (msg.Channel is SocketDMChannel) //if sandra's id messages the bot, he responds with mum or something, maybe French?
-                                                // Personalised messages for friends
-            {
-                bool b = badWords.Any(s => msg.Content.ToLower().Contains(s));
-                if (b == true)
-                {
-                    var r = replies[rnd.Next(replies.Count)].ToString();
-                    await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Angry.png", $"Hey! {msg.Author.Mention}!\n{r}");
-                    Console.WriteLine($"{msg.Author.Username} was rude to CamBot!");
-                }
-                else
-                {
-                    if(msg.Author.Id == 336978114498527242) //Sandra
-                    {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", $"Bonjour Maman,\nje t'aime.\nWell... That's enough French. As you're my developer's wife, you're automatically my mother :heart:");
-                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
-
-                    }
-                    else if(msg.Author.Id == 289047355498561538) // Cameron
-                    {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", "I also agree that junglers need to learn how to play their roles.");
-                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
-
-                    }
-                    else if(msg.Author.Id == 186553383396704256) // Karl
-                    {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", "Hey Karl,\nYou really need to get off Genshin some time. Also, get gud at Pyke lulw");
-                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
-
-                    }
-                    else if(msg.Author.Id == 522863720268038144) // Aidan
-                    {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", "The legendary Owner of Metro.\nIf you replied to your dms, that would be great. Also, thanks for making my face. Are you technically my dad? :heart:");
-                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
-
-                    }
-                    else if(msg.Author.Id == 191999899573682187) // Jack
-                    {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", "The legendary quote God himself.\nCurrently trying to convince Cameron to allow me to add your quotes to me, but he's not budging. Apparently they're 'special' and only for my brother, JackBot. :smiling_face_with_tear: \nI listen to your music whilst nobody's using me. Thank you :heart:");
-                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
-
-                    }
-                    else if(msg.Author.Id == 439548717570195466) // Manu
-                    {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Blank.png", "Hey Manu, I've emailed Google to ask if I can use their new AI to teach you how to spell. For now, I'll let Cameron help you. :wink:");
-                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
-
-                    }
-                    else if(msg.Author.Id == 169023834702348288) // Josh
-                    {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Blank.png", "Uhm... Hi Mr Policeman Sir.\nI'm not doing anything naughty... I promise :smile: Cameron on the other hand... uhhh.");
-                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
-
-                    }
-                    else if(msg.Author.Id == 87026109027221504) // Ro
-                    {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", "Legend says... Ro invented the new meta of Stridebreaker Ornn.");
-                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
-
-                    }
-                    else if(msg.Author.Id == 274508229331910656) // Imm
-                    {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", "Can you boost Cameron to Diamond? He needs it... I'm embarrassed. ");
-                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
-
-                    }
-                    else if(msg.Author.Id == 304643949027393537) // Alex
-                    {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Blank.png", "It's pronounced LYCHEE (Lie-chee)");
-                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
-
-                    }
-                    else if(msg.Author.Id == 105655241713713152) // Wils
-                    {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Blank.png", "The fuhrer himself?! Messaging me?! What an honour!");
-                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
-
-                    }
-                    else if(msg.Author.Id == 235753212009775106)
-                    {
-                        await msg.Channel.SendMessageAsync("Doing things I promise");
-                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
-                    }
-                    else
-                    {
-                        await msg.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Happy.png", $"Hi there, {msg.Author.Mention}!\nI don't have many replies right now, but I am getting improved daily to make sure you can talk to me!\nIf you're lost, and want to see what I do, do **$help**\nHave a nice day!");
-                        Console.WriteLine($"{msg.Author.Username} messaged CamBot :)");
-
-                    }
-
-                    var heart = new Emoji("\u2764");
-                    await msg.AddReactionAsync(heart);
-                }
-
-            }
-        }*/
+        
 
         public static async Task<HubbleDefinitionModel> hubbleDefinitionCall(string query = null)
         {
@@ -766,9 +616,9 @@ namespace CamBotButHesFullOfDumbShite.Modules
                         embed.Title = $"Urban Dictionary definition for: {query}";
                         embed.Description = sb.ToString();
                         embed.Color = new Color(0, 0, 128);
-
-                        await ReplyAsync(user.Mention, false, embed.Build());
+                        
                     }
+                    await ReplyAsync(user.Mention, false, embed.Build());
                 }
                 else
                 {
