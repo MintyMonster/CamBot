@@ -35,6 +35,7 @@ using CamBotButHesFullOfDumbShite.CoinsApi;
 using CamBotButHesFullOfDumbShite.MealsApi;
 using CamBotButHesFullOfDumbShite.BoredApi;
 using CamBotButHesFullOfDumbShite.TrefleApi;
+using CamBotButHesFullOfDumbShite.Database;
 
 namespace CamBotButHesFullOfDumbShite.Modules
 {
@@ -50,11 +51,13 @@ namespace CamBotButHesFullOfDumbShite.Modules
         private readonly CommandService _commands;
         private readonly IServiceProvider _services;
         private readonly IConfiguration _config;
+        private readonly ServerConfigEntities _db;
         public Commands(IServiceProvider services)
         {
             _commands = services.GetRequiredService<CommandService>();
             _config = services.GetRequiredService<IConfiguration>();
             var client = services.GetRequiredService<DiscordSocketClient>();
+            _db = services.GetRequiredService<ServerConfigEntities>();
             _services = services;
             _client = client;
             //_client.MessageReceived += MessageReceivedAsync;
@@ -126,43 +129,48 @@ namespace CamBotButHesFullOfDumbShite.Modules
         public async Task help()
         {
             var sb = new StringBuilder();
-            var user = Context.User.Username;
+            var user = Context.User;
 
             // make special help for each command
 
             sb.AppendLine("**I am the em-bot-diment of the word Random**\n");
+            sb.AppendLine($"**Please note:** My default prefix is: **$**\nUse **$prefix** to change it!\n");
 
             sb.AppendLine("__**Basic Commands:**__");
-            sb.AppendLine("-**$about** -> Learn about me :)");
-            sb.AppendLine("-**$contact** -> Contact my developer! :email:");
-            sb.AppendLine("-**$test** -> Am I online, or am I not online? That is the question.");
-            sb.AppendLine("-**$add** -> Add me to your server!");
-            sb.AppendLine("-**$changelog** -> See my changes!");
+            sb.AppendLine("-**about** -> Learn about me :)");
+            sb.AppendLine("-**contact** -> Contact my developer! :email:");
+            sb.AppendLine("-**test** -> Am I online, or am I not online? That is the question.");
+            sb.AppendLine("-**add** -> Add me to your server!");
+            sb.AppendLine("-**changelog** -> See my changes!");
+
+            sb.AppendLine($"\n__**Admin commands:**__");
+            sb.AppendLine($"-**prefix <character>** -> Change my prefix!");
+            sb.AppendLine($"*(More coming soon)*");
 
             sb.AppendLine($"\n__**Commands:**__");
-            sb.AppendLine("-**$dadjoke** -> Gives a random Dad joke! :joy:");
-            sb.AppendLine("-**$iss** -> Get the current location of the International Space Station :rocket:");
-            sb.AppendLine("-**$mars** -> Get pictures straight from the Mars Rover! :rocket:");
-            sb.AppendLine("-**$cat** -> Gives you a random cuddly kitten! :cat:");
-            sb.AppendLine("-**$fox** -> Enjoy a fluffy fox! :fox:");
-            sb.AppendLine("-**$dog** -> Doggies for everyone! :dog:");
-            sb.AppendLine("-**$cocktail** -> Get a random cocktail recipe! :cocktail:");
-            sb.AppendLine("-**$prices** -> Get the top 10 crytocurrency prices! :dollar:");
-            sb.AppendLine("-**$recipe** -> Get a random recipe for dinner! :shallow_pan_of_food:");
-            sb.AppendLine("-**$catfact** -> Cat facts in the plenty! :cat:");
-            sb.AppendLine("-**$bored** -> Bored? Find an activity! :sleeping:");
+            sb.AppendLine("-**dadjoke** -> Gives a random Dad joke! :joy:");
+            sb.AppendLine("-**iss** -> Get the current location of the International Space Station :rocket:");
+            sb.AppendLine("-**mars** -> Get pictures straight from the Mars Rover! :rocket:");
+            sb.AppendLine("-**cat** -> Gives you a random cuddly kitten! :cat:");
+            sb.AppendLine("-**fox** -> Enjoy a fluffy fox! :fox:");
+            sb.AppendLine("-**dog** -> Doggies for everyone! :dog:");
+            sb.AppendLine("-**cocktail** -> Get a random cocktail recipe! :cocktail:");
+            sb.AppendLine("-**prices** -> Get the top 10 crytocurrency prices! :dollar:");
+            sb.AppendLine("-**recipe** -> Get a random recipe for dinner! :shallow_pan_of_food:");
+            sb.AppendLine("-**catfact** -> Cat facts in the plenty! :cat:");
+            sb.AppendLine("-**bored** -> Bored? Find an activity! :sleeping:");
 
             sb.AppendLine($"\n__**Commands with optional queries:**__");
-            sb.AppendLine("-**$apod <optional: 'today'>** -> Get a random Astrology picture! :ringed_planet:");
-            sb.AppendLine("-**$yearfact <optional: number>** -> Get a fact from a year! :two::zero::two::one:");
-            sb.AppendLine("-**$mathfact <optional: number>** -> Get a random math fact! :1234:");
-            sb.AppendLine("-**$plant <optional: name/genus>** -> Get a random plant, or search for a specific one! :olive:");
+            sb.AppendLine("-**apod <optional: 'today'>** -> Get a random Astrology picture! :ringed_planet:");
+            sb.AppendLine("-**yearfact <optional: number>** -> Get a fact from a year! :two::zero::two::one:");
+            sb.AppendLine("-**mathfact <optional: number>** -> Get a random math fact! :1234:");
+            sb.AppendLine("-**plant <optional: name/genus>** -> Get a random plant, or search for a specific one! :olive:");
 
             sb.AppendLine($"\n__**Commands with queries:**__");
-            sb.AppendLine("-**$sdef <word>** -> Get the definition of a space word!");
-            sb.AppendLine("-**$wiki <word>** -> Get Wikipedia search results!");
-            sb.AppendLine("-**$weather <city name>** -> Get the weather for your city! :thunder_cloud_rain:");
-            sb.AppendLine("-**$ubdefine <word>** -> Get the Urban Dictionary definitions for words!");
+            sb.AppendLine("-**sdef <word>** -> Get the definition of a space word!");
+            sb.AppendLine("-**wiki <word>** -> Get Wikipedia search results!");
+            sb.AppendLine("-**weather <city name>** -> Get the weather for your city! :thunder_cloud_rain:");
+            sb.AppendLine("-**ubdefine <word>** -> Get the Urban Dictionary definitions for words!");
 
             var embed = new EmbedBuilder()
             {
@@ -174,9 +182,35 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var questionMark = new Emoji(":question:");
 
             await Context.User.SendMessageAsync(null, false, embed.Build());
-            await ReplyAsync("I've sent you a private message!");
-            Console.Write($"{user} => $help"); // log to console
+            await ReplyAsync($"{user.Mention} I've sent you a private message!");
+            Console.Write($"{user} => help"); // log to console
         }
+
+        [Command("prefix")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        public async Task ChangePrefix([Remainder]char query)
+        {
+            var embed = new EmbedBuilder();
+            var user = Context.User;
+            var guildId = Context.Guild.Id;
+
+            var getGuildId = _db.serverConfigModel.AsEnumerable().Where(a => Convert.ToUInt64(a.guildid) == guildId).FirstOrDefault();
+
+            if(getGuildId != null)
+            {
+                getGuildId.prefix = query.ToString();
+            }
+
+            await _db.SaveChangesAsync();
+
+            embed.Title = "Prefix changed!";
+            embed.Description = $"You've successfully changed your prefix to '{query}'!\nNow, whenever you call for a command use this prefix.\nFor example: {query}help";
+            embed.Color = new Color(124, 108, 187);
+
+            await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Username} => prefix");
+        }
+
 
         [Command("changelog")]
         [Alias("change")]
@@ -199,27 +233,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Username} => $changelog");
-        }
-
-
-        [Command("donate")]
-        public async Task getDonation()
-        {
-            var sb = new StringBuilder();
-            var embed = new EmbedBuilder();
-            var user = Context.User;
-
-            sb.AppendLine($"[{user.Mention}]\n");
-            sb.AppendLine($"All donations go to keeping me alive! But don't worry, I will continue to get updated and improved over time!\n Want to suggest something? Use **$contact**\n");
-            sb.AppendLine($"Want to donate? Click here: https://paypal.me/cambotapp?locale.x=en_GB");
-
-            embed.Title = "Donate";
-            embed.Description = sb.ToString();
-            embed.Color = new Color(124, 108, 187);
-
-            await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Username} -> $donate");
+            Console.WriteLine($"{user.Username} => changelog");
         }
 
         [Command("contact")]
@@ -258,7 +272,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Username} => $link");
+            Console.WriteLine($"{user.Username} => add");
         }
 
 
@@ -283,7 +297,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Username} => $about");
+            Console.WriteLine($"{user.Username} => about");
         }
 
 
@@ -298,7 +312,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             };
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user} => $test");
+            Console.WriteLine($"{user} => test");
         }
 
         [Command("APOD")]
@@ -407,7 +421,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             await ReplyAsync($"{Context.User.Mention}", false, embed.Build());
-            Console.WriteLine($"{user} => $apod");
+            Console.WriteLine($"{user} => apod");
         }
 
         [Command("spacedefinition")]
@@ -453,7 +467,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(153, 50, 204);
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user} => $sdef");
+            Console.WriteLine($"{user} => sdef");
         }
 
         [Command("Wiki")]
@@ -487,7 +501,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(0, 0, 255);
 
             await ReplyAsync(null, false, embed.Build()); 
-            Console.WriteLine($"{user} => $wiki");
+            Console.WriteLine($"{user} => wiki");
         }
 
         [Command("DadJoke")]
@@ -526,7 +540,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Description = sb.ToString();
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Username} => $ISS");
+            Console.WriteLine($"{user.Username} => ISS");
         }
 
         [Command("Mars", RunMode = RunMode.Async)]
@@ -580,7 +594,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             
-            Console.WriteLine($"{user.Username} => $mars");
+            Console.WriteLine($"{user.Username} => mars");
         }
 
         [Command("UBdefine")]
@@ -609,13 +623,25 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     for (int i = 0; i < def.list.Count; i++)
                     {
                         string definition = def.list[i].definition;
-                        var removedLeftBrackets = definition.Replace('[', ' ');
-                        var removedRightBrackets = removedLeftBrackets.Replace(']', ' ');
-                        sb.AppendLine(removedRightBrackets);
 
-                        embed.Title = $"Urban Dictionary definition for: {query}";
-                        embed.Description = sb.ToString();
-                        embed.Color = new Color(0, 0, 128);
+                        if (!string.IsNullOrEmpty(definition))
+                        {
+                            var removedLeftBrackets = definition.Replace('[', ' ');
+                            var removedRightBrackets = removedLeftBrackets.Replace(']', ' ');
+                            sb.AppendLine(removedRightBrackets);
+
+                            embed.Title = $"Urban Dictionary definition for: {query}";
+                            embed.Description = sb.ToString();
+                            embed.Color = new Color(0, 0, 128);
+                        }
+                        else
+                        {
+                            sb.AppendLine($"Couldn't find anything from: {query} :sob:");
+                            embed.Title = $"Uh oh...";
+                            embed.Description = sb.ToString();
+                            embed.Color = new Color(255, 0, 0);
+                        }
+                        
                         
                     }
                     await ReplyAsync(user.Mention, false, embed.Build());
@@ -630,7 +656,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 
             }
             
-            Console.WriteLine($"{user.Username} => $ubdefine");
+            Console.WriteLine($"{user.Username} => ubdefine");
         }
 
         [Command("yearfact")]
@@ -691,7 +717,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 
             }
 
-            Console.WriteLine($"{user.Username} => $yearfact");
+            Console.WriteLine($"{user.Username} => yearfact");
         }
 
         [Command("mathfact")]
@@ -782,14 +808,13 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                     throw new Exception(response.ReasonPhrase);
                 }
-               
             }
 
             
-            Console.WriteLine($"{user.Username} => $mathfact");
+            Console.WriteLine($"{user.Username} => mathfact");
         }
 
-        [Command("weather")]
+        [Command("weather")] // Add easter eggs
         public async Task getWeatherInCountry([Remainder]string query = null)
         {
             var sb = new StringBuilder();
@@ -807,12 +832,16 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     if (response.IsSuccessStatusCode)
                     {
                         OWMRoot owm = await response.Content.ReadAsAsync<OWMRoot>();
+                        var tempF = (owm.main.temp * 1.8) + 32;
+                        var feelsF = (owm.main.feels_like * 1.8) + 32;
+                        var maxF = (owm.main.temp_max * 1.8) + 32;
+                        var minF = (owm.main.temp_min * 1.8) + 32;
                         sbTitle.AppendLine($"The current weather in {owm.name}:");
                         sb.AppendLine($"**Description:** {owm.weather[0].description}\n");
-                        sb.AppendLine($"**Temperature:** {owm.main.temp}°C\n");
-                        sb.AppendLine($"**Feels like:** {owm.main.feels_like}°C\n");
-                        sb.AppendLine($"**Max temp:** {owm.main.temp_max}°C\n");
-                        sb.AppendLine($"**Min temp:** {owm.main.temp_min}°C\n");
+                        sb.AppendLine($"**Temperature:** {owm.main.temp}°C ({tempF}°F)\n");
+                        sb.AppendLine($"**Feels like:** {owm.main.feels_like}°C ({feelsF}°F)\n");
+                        sb.AppendLine($"**Max temp:** {owm.main.temp_max}°C ({maxF}°F)\n");
+                        sb.AppendLine($"**Min temp:** {owm.main.temp_min}°C ({minF}°F)\n");
                         sb.AppendLine($"**Humidity:** {owm.main.humidity}\n");
                         sb.AppendLine($"**Wind Speed:** {owm.wind.speed}mph\n");
                         sb.AppendLine($"**Wind direction:** {owm.wind.deg}°\n");
@@ -825,7 +854,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     }
                     else
                     {
-                        sb.AppendLine($"Something went wrong... Please try again.");
+                        sb.AppendLine($"I either can't find your city, or something went drastically wrong. Please try again.");
                         await Context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", sb.ToString());
                         throw new Exception(response.ReasonPhrase);
                     }
@@ -839,7 +868,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             
 
             
-            Console.WriteLine($"{user.Username} => $weather {query}");
+            Console.WriteLine($"{user.Username} => weather {query}");
         }
 
         [Command("cat")]
@@ -863,9 +892,18 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 {
                     CatsRoot cats = JsonConvert.DeserializeObject<CatsRoot>(await response.Content.ReadAsStringAsync());
                     caturl = $"{cats.file}";
+                    if (!string.IsNullOrEmpty(caturl))
+                    {
+                        embed.ImageUrl = caturl;
+                        embed.Color = new Color(r, g, b);
+                    }
+                    else
+                    {
+                        embed.Description = "I seem to be missing the key ingredient... A cat :thinking: :smiling_face_with_tear:";
+                        embed.Color = new Color(r, g, b);
+                    }
 
-                    embed.ImageUrl = caturl;
-                    embed.Color = new Color(r, g, b);
+                    
 
                     await ReplyAsync($"{user.Mention} wants to see cuteness!", false, embed.Build());
                 }
@@ -876,7 +914,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
             }
             
-            Console.WriteLine($"{user.Username} => $cat");
+            Console.WriteLine($"{user.Username} => cat");
         }
 
         [Command("fox")]
@@ -899,9 +937,18 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 {
                     FoxRoot fox = JsonConvert.DeserializeObject<FoxRoot>(await response.Content.ReadAsStringAsync());
                     foxurl = $"{fox.image}";
+                    if (!string.IsNullOrEmpty(foxurl))
+                    {
+                        embed.ImageUrl = foxurl;
+                        embed.Color = new Color(r, g, b);
+                    }
+                    else
+                    {
+                        embed.Description = "Well, that was anti-climatic. Where's my fox!? :cry:";
+                        embed.Color = new Color(r, g, b);
+                    }
 
-                    embed.ImageUrl = foxurl;
-                    embed.Color = new Color(r, g, b);
+                    
 
                     await ReplyAsync($"A cuddly fox for {user.Mention}", false, embed.Build());
                 }
@@ -913,7 +960,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             
-            Console.WriteLine($"{user.Mention} => $fox");
+            Console.WriteLine($"{user.Mention} => fox");
         }
 
         [Command("dog")]
@@ -937,8 +984,18 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     DogRoot dog = JsonConvert.DeserializeObject<DogRoot>(await response.Content.ReadAsStringAsync());
                     dogurl = $"{dog.url}";
 
-                    embed.ImageUrl = dogurl;
-                    embed.Color = new Color(r, g, b);
+                    if (!string.IsNullOrEmpty(dogurl))
+                    {
+                        embed.ImageUrl = dogurl;
+                        embed.Color = new Color(r, g, b);
+                    }
+                    else
+                    {
+                        embed.Description = "I seem to be lacking a dog. Where is my dog? Where art thou, Señor Doggie?";
+                        embed.Color = new Color(r, g, b);
+                    }
+
+                    
 
                     await ReplyAsync($"Fluffball delivery for: {user.Mention}", false, embed.Build());
                 }
@@ -950,7 +1007,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             
-            Console.WriteLine($"{user.Username} => $dog");
+            Console.WriteLine($"{user.Username} => dog");
         }
 
         [Command("cocktail")]
@@ -1014,7 +1071,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
             }
 
-            Console.WriteLine($"{user.Username} => $cocktail {sbTitle}");
+            Console.WriteLine($"{user.Username} => cocktail {sbTitle}");
         }
 
         [Command("prices")]
@@ -1061,7 +1118,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
 
-            Console.WriteLine($"{user.Username} => $prices");
+            Console.WriteLine($"{user.Username} => prices");
         }
 
         [Command("recipe")]
@@ -1152,7 +1209,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             
-            Console.WriteLine($"{user.Username} => $recipe");
+            Console.WriteLine($"{user.Username} => recipe");
         }
 
         [Command("catfact")]
@@ -1193,7 +1250,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
             }
 
-            Console.WriteLine($"{user.Username} => $catfact");
+            Console.WriteLine($"{user.Username} => catfact");
         }
 
         [Command("bored")]
@@ -1237,7 +1294,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
             }
 
-            Console.WriteLine($"{user.Username} => $bored");
+            Console.WriteLine($"{user.Username} => bored");
         }
 
         [Command("plants")] // Search through google images
@@ -1358,7 +1415,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
             }
 
-            Console.WriteLine($"{user.Username} => $plants");
+            Console.WriteLine($"{user.Username} => plants");
         }
     }
 }

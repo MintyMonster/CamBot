@@ -6,6 +6,9 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using System.Text;
+using CamBotButHesFullOfDumbShite.Database; 
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CamBotButHesFullOfDumbShite.Services
 {
@@ -14,9 +17,11 @@ namespace CamBotButHesFullOfDumbShite.Services
         private readonly CommandService _commands;
         private readonly DiscordSocketClient _client;
         private readonly IServiceProvider _services;
+        private readonly ServerConfigEntities _db;
 
         public CommandHandler(IServiceProvider services)
         {
+            _db = services.GetRequiredService<ServerConfigEntities>();
             _commands = services.GetRequiredService<CommandService>(); // grab services for those pre-set
             _client = services.GetRequiredService<DiscordSocketClient>();
             _services = services;
@@ -33,15 +38,40 @@ namespace CamBotButHesFullOfDumbShite.Services
 
         public async Task MessageReceivedAsync(SocketMessage rawMessage)
         {
-            var argPos = 0; 
-            char prefix = '$'; 
+            if (rawMessage.Channel is SocketDMChannel) return;
 
-            if (!(rawMessage is SocketUserMessage message))
+            var message = rawMessage as SocketUserMessage;
+            var context = new SocketCommandContext(_client, message);
+
+            ulong guildId = context.Guild.Id;
+            var argPos = 0;
+            char prefix = '$';
+
+            var getGuildId = _db.serverConfigModel.AsEnumerable().Where(a => Convert.ToUInt64(a.guildid) == guildId).FirstOrDefault();
+
+            if (getGuildId != null)
+            {
+                prefix = char.Parse(getGuildId.prefix);
+            }
+            else
+            {
+                await _db.AddAsync(new ServerConfigModel
+                {
+                    guildid = guildId.ToString(),
+                    prefix = "$",
+                    color = "purple"
+                });
+
+                await _db.SaveChangesAsync();
+                prefix = '$';
+            }
+
+            if (!(rawMessage is SocketUserMessage))
             {
                 return;
             }
 
-            if (rawMessage.Channel is SocketDMChannel) return;
+            
 
             if (message.Source != MessageSource.User)
             {
@@ -53,7 +83,7 @@ namespace CamBotButHesFullOfDumbShite.Services
                 return;
             }
 
-            var context = new SocketCommandContext(_client, message);
+            
             await _commands.ExecuteAsync(context, argPos, _services);
         }
 
@@ -76,7 +106,7 @@ namespace CamBotButHesFullOfDumbShite.Services
                 return;
             }
 
-            await context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", "Error, something went wrong :(");
+            await context.Channel.SendFileAsync(@"/home/pi/CamBot/CamBot_Sad.png", ":x: Something went wrong :(");
         }
     }
 }

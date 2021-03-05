@@ -17,12 +17,12 @@ using CamBotButHesFullOfDumbShite.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.AspNetCore.Hosting;
+using CamBotButHesFullOfDumbShite.Database;
 
 namespace CamBotButHesFullOfDumbShite
 {
     class Program
     {
-        public static char prefix = '$';
         private DiscordSocketClient _client;
         private IConfiguration _config;
         public static void Main(string[] args)
@@ -67,7 +67,8 @@ namespace CamBotButHesFullOfDumbShite
                 .AddSingleton(_config)
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton<CommandService>()
-                .AddSingleton<CommandHandler>();
+                .AddSingleton<CommandHandler>()
+                .AddDbContext<ServerConfigEntities>();
 
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider;
