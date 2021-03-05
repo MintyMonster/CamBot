@@ -144,7 +144,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine("-**changelog** -> See my changes!");
 
             sb.AppendLine($"\n__**Admin commands:**__");
-            sb.AppendLine($"-**prefix <character>** -> Change my prefix!");
+            sb.AppendLine($"-**changeprefix <character>** -> Change my prefix!");
             sb.AppendLine($"*(More coming soon)*");
 
             sb.AppendLine($"\n__**Commands:**__");
@@ -186,7 +186,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             Console.Write($"{user} => help"); // log to console
         }
 
-        [Command("prefix")]
+        [Command("changeprefix")]
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task ChangePrefix([Remainder]char query)
         {
@@ -204,7 +204,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             await _db.SaveChangesAsync();
 
             embed.Title = "Prefix changed!";
-            embed.Description = $"You've successfully changed your prefix to '{query}'!\nNow, whenever you call for a command use this prefix.\nFor example: {query}help";
+            embed.Description = $"You've successfully changed your prefix to **'{query}'**!\nNow, whenever you call for a command use this prefix.\nFor example: {query}help";
             embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
