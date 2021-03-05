@@ -134,7 +134,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             // make special help for each command
 
             sb.AppendLine("**I am the em-bot-diment of the word Random**\n");
-            sb.AppendLine($"**Please note:** My default prefix is: **$**\nUse **$prefix** to change it!\n");
+            sb.AppendLine($"**Please note:** My default prefix is: **$**\nUse **$changeprefix** to change it!\n");
 
             sb.AppendLine("__**Basic Commands:**__");
             sb.AppendLine("-**about** -> Learn about me :)");
