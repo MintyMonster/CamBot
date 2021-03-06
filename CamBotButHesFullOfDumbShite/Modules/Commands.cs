@@ -224,7 +224,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var embed = new EmbedBuilder();
             var sb = new StringBuilder();
             var userId = Context.User.Id;
-            var user = Context.User.Username;
+            var user = Context.User;
             var points = 0;
 
             var getPoints = _pldb.playerLevelsModel.AsEnumerable().Where(a => Convert.ToUInt64(a.playerId) == userId).FirstOrDefault();
@@ -234,8 +234,8 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 points = Convert.ToInt32(getPoints.points);
             }
 
-            embed.Title = $"{user}'s points!";
-            embed.Description = $"You have earnt **{points}** points!\nTo earn points, simply use commands!\nThese points are **global**, so they count across all servers.\nLeaderboard coming soon!";
+            embed.Title = $"{user.Username}'s points!";
+            embed.Description = $"[{user.Mention}]\n\nYou have earnt **{points}** points!\nTo earn points, simply use commands!\nThese points are **global**, so they count across all servers.\nLeaderboard coming soon!";
             embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
