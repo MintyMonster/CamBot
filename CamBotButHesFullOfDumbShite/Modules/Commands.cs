@@ -331,7 +331,6 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine($"**+ changeprefix** -> Change my prefix!");
             sb.AppendLine($"**+ updates** -> See latest updates for the bot");
             sb.AppendLine($"**+ points** -> See your points");
-            sb.AppendLine($"**+ leaderboard** -> See the points leaderboard!");
             sb.AppendLine();
             sb.AppendLine($"**- donate**");
             sb.AppendLine($"**- changelog** -> now **updates**");
