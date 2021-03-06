@@ -273,7 +273,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                             sb.AppendLine($":third_place:{lines[i]}:third_place:");
                             break;
                         default:
-                            sb.AppendLine($"{i -1} - {lines[i]}");
+                            sb.AppendLine($"{i + 1}) {lines[i]}");
                             break;
                     }
                 }
