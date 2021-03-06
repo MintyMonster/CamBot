@@ -250,11 +250,9 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var userId = Context.User.Id;
             var user = Context.User.Username;
 
-            var topPoints = await _pldb.playerLevelsModel.ToListAsync();
+            var leaderboard = _pldb.playerLevelsModel.AsEnumerable().OrderByDescending(x => x.points).ToList();
 
-            var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
-                .OrderByDescending(x => x.points)
-                .Select(x => $"**{x.playerUsername}** - {x.points}").ToList());
+            
 
             if(leaderboard.Count() <= 15)
             {
