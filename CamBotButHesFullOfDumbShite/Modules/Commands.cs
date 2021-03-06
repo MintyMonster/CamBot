@@ -256,25 +256,55 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 .OrderByDescending(x => x.points)
                 .Select(x => $"**{x.playerUsername}** - {x.points}").ToList());
 
-            for(var i = 0; i <= 15; i++)
+            if(leaderboard.Length <= 15)
             {
-                sb.AppendLine($"{leaderboard[i]}");
+                for (var i = 0; i <= leaderboard.Length; i++)
+                {
+                    sb.AppendLine($"{leaderboard[i]}");
 
-                if(i == 1)
-                {
-                    sb.AppendLine($":first_place:{leaderboard[i]}:first_place:");
-                }else if(i == 2)
-                {
-                    sb.AppendLine($":second_place:{leaderboard[i]}:second_place:");
-                }else if(i == 3)
-                {
-                    sb.AppendLine($":third_place:{leaderboard[i]}:third_place:");
-                }
-                else
-                {
-                    sb.AppendLine($"{i} - {leaderboard[i]}");
+                    if (i == 1)
+                    {
+                        sb.AppendLine($":first_place:{leaderboard[i]}:first_place:");
+                    }
+                    else if (i == 2)
+                    {
+                        sb.AppendLine($":second_place:{leaderboard[i]}:second_place:");
+                    }
+                    else if (i == 3)
+                    {
+                        sb.AppendLine($":third_place:{leaderboard[i]}:third_place:");
+                    }
+                    else
+                    {
+                        sb.AppendLine($"{i} - {leaderboard[i]}");
+                    }
                 }
             }
+            else
+            {
+                for (var i = 0; i <= 15; i++)
+                {
+                    sb.AppendLine($"{leaderboard[i]}");
+
+                    if (i == 1)
+                    {
+                        sb.AppendLine($":first_place:{leaderboard[i]}:first_place:");
+                    }
+                    else if (i == 2)
+                    {
+                        sb.AppendLine($":second_place:{leaderboard[i]}:second_place:");
+                    }
+                    else if (i == 3)
+                    {
+                        sb.AppendLine($":third_place:{leaderboard[i]}:third_place:");
+                    }
+                    else
+                    {
+                        sb.AppendLine($"{i} - {leaderboard[i]}");
+                    }
+                }
+            }
+            
 
             embed.Title = ":trophy: Points leaderboard! :trophy:";
             embed.Description = sb.ToString();
