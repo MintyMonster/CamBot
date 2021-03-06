@@ -36,6 +36,7 @@ using CamBotButHesFullOfDumbShite.MealsApi;
 using CamBotButHesFullOfDumbShite.BoredApi;
 using CamBotButHesFullOfDumbShite.TrefleApi;
 using CamBotButHesFullOfDumbShite.Database;
+using CamBotButHesFullOfDumbShite.PlayerLevelsDatabase;
 
 namespace CamBotButHesFullOfDumbShite.Modules
 {
@@ -52,12 +53,14 @@ namespace CamBotButHesFullOfDumbShite.Modules
         private readonly IServiceProvider _services;
         private readonly IConfiguration _config;
         private readonly ServerConfigEntities _db;
+        private readonly PlayerLevelsEntities _pldb;
         public Commands(IServiceProvider services)
         {
             _commands = services.GetRequiredService<CommandService>();
             _config = services.GetRequiredService<IConfiguration>();
             var client = services.GetRequiredService<DiscordSocketClient>();
             _db = services.GetRequiredService<ServerConfigEntities>();
+            _pldb = services.GetRequiredService<PlayerLevelsEntities>();
             _services = services;
             _client = client;
             //_client.MessageReceived += MessageReceivedAsync;
@@ -141,11 +144,15 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine("-**contact** -> Contact my developer! :email:");
             sb.AppendLine("-**test** -> Am I online, or am I not online? That is the question.");
             sb.AppendLine("-**add** -> Add me to your server!");
-            sb.AppendLine("-**changelog** -> See my changes!");
+            sb.AppendLine("-**updates** -> See my latest changes");
 
             sb.AppendLine($"\n__**Admin commands:**__");
-            sb.AppendLine($"-**changeprefix <character>** -> Change my prefix!");
+            sb.AppendLine($"-**changeprefix <symbol/character>** -> Change my prefix!");
             sb.AppendLine($"*(More coming soon)*");
+
+            sb.AppendLine($"\n__**Points commands:**__");
+            sb.AppendLine($"-**points** -> Get your current points");
+            sb.AppendLine($"-**leaderboard** -> See the top 15 on the points leaderboard!");
 
             sb.AppendLine($"\n__**Commands:**__");
             sb.AppendLine("-**dadjoke** -> Gives a random Dad joke! :joy:");
@@ -211,29 +218,94 @@ namespace CamBotButHesFullOfDumbShite.Modules
             Console.WriteLine($"{user.Username} => prefix");
         }
 
-
-        [Command("changelog")]
-        [Alias("change")]
-        public async Task getChangeLog()
+        [Command("points")]
+        public async Task getPoints()
         {
-            var sb = new StringBuilder();
             var embed = new EmbedBuilder();
-            var user = Context.User;
-            sb.AppendLine($"**March 2nd -**\n");
-            sb.AppendLine($"**Added:**");
-            sb.AppendLine($"-$inspirationalquotes/$quotes");
-            sb.AppendLine($"-$donate");
-            sb.AppendLine($"\n**Ammended:**");
-            sb.AppendLine($"-$about");
-            sb.AppendLine($"-$help - Made it look pretty");
-            sb.AppendLine($"\nWant to see more? Try $help");
+            var sb = new StringBuilder();
+            var userId = Context.User.Id;
+            var user = Context.User.Username;
+            var points = 0;
 
-            embed.Title = "ChangeLog -";
+            var getPoints = _pldb.playerLevelsModel.AsEnumerable().Where(a => Convert.ToUInt64(a.playerId) == userId).FirstOrDefault();
+
+            if(getPoints != null)
+            {
+                points = Convert.ToInt32(getPoints.points);
+            }
+
+            embed.Title = $"{user}'s points!";
+            embed.Description = $"You have earnt **{points}** points!\nTo earn points, simply use commands!\nThese points are **global**, so they count across all servers.\nUse the **leaderboard** command to see who's on top!";
+            embed.Color = new Color(124, 108, 187);
+
+            await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user} => points");
+        }
+
+        [Command("leaderboard")]
+        public async Task getPointsLeaderboard()
+        {
+            var embed = new EmbedBuilder();
+            var sb = new StringBuilder();
+            var userId = Context.User.Id;
+            var user = Context.User.Username;
+
+            var topPoints = await _pldb.playerLevelsModel.ToListAsync();
+
+            var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
+                .OrderByDescending(x => x.points)
+                .Select(x => $"**{x.playerUsername}** - {x.points}").ToList());
+
+            for(var i = 0; i <= 15; i++)
+            {
+                sb.AppendLine($"{leaderboard[i]}");
+
+                if(i == 1)
+                {
+                    sb.AppendLine($":first_place:{leaderboard[i]}:first_place:");
+                }else if(i == 2)
+                {
+                    sb.AppendLine($":second_place:{leaderboard[i]}:second_place:");
+                }else if(i == 3)
+                {
+                    sb.AppendLine($":third_place:{leaderboard[i]}:third_place:");
+                }
+                else
+                {
+                    sb.AppendLine($"{i} - {leaderboard[i]}");
+                }
+            }
+
+            embed.Title = ":trophy: Points leaderboard! :trophy:";
             embed.Description = sb.ToString();
             embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user.Username} => changelog");
+            Console.WriteLine($"{user} => leaderboard");
+        }
+
+
+        [Command("updates")]
+        public async Task getUpdates()
+        {
+            var sb = new StringBuilder();
+            var embed = new EmbedBuilder();
+            var user = Context.User;
+
+            sb.AppendLine($"__**Updates:**__\n");
+            sb.AppendLine($"**+ changeprefix** -> Change my prefix!");
+            sb.AppendLine($"**+ updates** -> See latest updates for the bot");
+            sb.AppendLine($"**+ points** -> See your points");
+            sb.AppendLine($"**+ leaderboard** -> See the points leaderboard!");
+            sb.AppendLine();
+            sb.AppendLine($"**- donate**");
+            sb.AppendLine($"**- changelog** -> now **updates**");
+
+            embed.Description = sb.ToString();
+            embed.Color = new Color(124, 108, 187);
+
+            await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user.Username} => updates");
         }
 
         [Command("contact")]
@@ -243,7 +315,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var sb = new StringBuilder();
             var embed = new EmbedBuilder();
 
-            sb.AppendLine($"I am kinda small at the moment :( and I would love it if you could recommend me anything else to add to Cambot! Please check the **Suggestions/Questions** part of this command.\n");
+            sb.AppendLine($"I am kinda small at the moment :( and I would love it if you could recommend me more things to add! Please check the **Suggestions/Questions** part of this command.\n");
             sb.AppendLine("Should anyone want to contact me regarding the use of any of the information within this bot, please email me at **cambot@minty-studios.co.uk**\n");
             sb.AppendLine("**Suggestions/Questions:**");
             sb.AppendLine("If you would like to make a suggestion or ask a question, email me at **cambot@minty-studios.co.uk**\nPlease ensure the subject of your email is **Suggestion/Question**\n");

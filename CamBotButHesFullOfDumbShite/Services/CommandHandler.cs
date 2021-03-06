@@ -9,6 +9,7 @@ using System.Text;
 using CamBotButHesFullOfDumbShite.Database; 
 using System.Collections.Generic;
 using System.Linq;
+using CamBotButHesFullOfDumbShite.PlayerLevelsDatabase;
 
 namespace CamBotButHesFullOfDumbShite.Services
 {
@@ -18,10 +19,12 @@ namespace CamBotButHesFullOfDumbShite.Services
         private readonly DiscordSocketClient _client;
         private readonly IServiceProvider _services;
         private readonly ServerConfigEntities _db;
+        private readonly PlayerLevelsEntities _pldb;
 
         public CommandHandler(IServiceProvider services)
         {
             _db = services.GetRequiredService<ServerConfigEntities>();
+            _pldb = services.GetRequiredService<PlayerLevelsEntities>();
             _commands = services.GetRequiredService<CommandService>(); // grab services for those pre-set
             _client = services.GetRequiredService<DiscordSocketClient>();
             _services = services;
@@ -43,6 +46,7 @@ namespace CamBotButHesFullOfDumbShite.Services
             var message = rawMessage as SocketUserMessage;
             var context = new SocketCommandContext(_client, message);
 
+            ulong playersId = context.User.Id;
             ulong guildId = context.Guild.Id;
             var argPos = 0;
             char prefix = '$';
@@ -83,6 +87,26 @@ namespace CamBotButHesFullOfDumbShite.Services
                 return;
             }
 
+            var getPoints = _pldb.playerLevelsModel.AsEnumerable().Where(a => Convert.ToUInt64(a.playerId) == playersId).FirstOrDefault();
+            var points = 1;
+
+            if(getPoints != null)
+            {
+                var currentPoints = Convert.ToInt32(getPoints.points);
+                var newPoints = currentPoints + 1;
+                getPoints.points = newPoints.ToString();
+            }
+            else
+            {
+                await _pldb.AddAsync(new PlayerLevelsModel
+                {
+                    playerId = playersId.ToString(),
+                    playerUsername = context.User.Username,
+                    points = points.ToString()
+                });
+            }
+
+            await _pldb.SaveChangesAsync();
             
             await _commands.ExecuteAsync(context, argPos, _services);
         }

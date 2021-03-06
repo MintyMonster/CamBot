@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.AspNetCore.Hosting;
 using CamBotButHesFullOfDumbShite.Database;
+using CamBotButHesFullOfDumbShite.PlayerLevelsDatabase;
 
 namespace CamBotButHesFullOfDumbShite
 {
@@ -68,7 +69,8 @@ namespace CamBotButHesFullOfDumbShite
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
-                .AddDbContext<ServerConfigEntities>();
+                .AddDbContext<ServerConfigEntities>()
+                .AddDbContext<PlayerLevelsEntities>();
 
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider;
