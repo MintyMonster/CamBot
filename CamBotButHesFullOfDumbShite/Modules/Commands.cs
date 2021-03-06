@@ -250,9 +250,11 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var userId = Context.User.Id;
             var user = Context.User.Username;
 
-            var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
+            var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsQueryable()
                 .OrderByDescending(x => x.points)
                 .Select(x => $"**{x.playerUsername}** - {x.points}"));
+
+            
 
             sb.AppendLine($"{leaderboard}");
             
