@@ -262,13 +262,13 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 {
                     switch (i)
                     {
-                        case 1:
+                        case 0:
                             sb.AppendLine($":first_place:{lines[i]}:first_place:");
                             break;
-                        case 2:
+                        case 1:
                             sb.AppendLine($":second_place:{lines[i]}:second_place:");
                             break;
-                        case 3:
+                        case 2:
                             sb.AppendLine($":third_place:{lines[i]}:third_place:");
                             break;
                         default:
@@ -283,13 +283,13 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 {
                     switch (i)
                     {
-                        case 1:
+                        case 0:
                             sb.AppendLine($":first_place:{lines[i]}:first_place:");
                             break;
-                        case 2:
+                        case 1:
                             sb.AppendLine($":second_place:{lines[i]}:second_place:");
                             break;
-                        case 3:
+                        case 2:
                             sb.AppendLine($":third_place:{lines[i]}:third_place:");
                             break;
                         default:
