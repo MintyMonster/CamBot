@@ -250,30 +250,34 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var userId = Context.User.Id;
             var user = Context.User.Username;
 
-            var leaderboard = _pldb.playerLevelsModel.AsEnumerable().OrderByDescending(x => x.points).ToList();
+            var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
+                .OrderByDescending(x => x.points)
+                .Select(x => $"**{x.playerUsername}** - {x.points}"));
+
+            string[] lines = leaderboard.Split("\n", StringSplitOptions.None);
 
             
 
-            if(leaderboard.Count() <= 15)
+            if(lines.Count() <= 15)
             {
-                for (var i = 0; i <= leaderboard.Count() - 1; i++)
+                for (var i = 0; i <= lines.Count() - 1; i++)
                 {
 
                     if (i == 0)
                     {
-                        sb.AppendLine($":first_place:{leaderboard[i]}:first_place:");
+                        sb.AppendLine($":first_place:{lines[i]}:first_place:");
                     }
                     else if (i == 1)
                     {
-                        sb.AppendLine($":second_place:{leaderboard[i]}:second_place:");
+                        sb.AppendLine($":second_place:{lines[i]}:second_place:");
                     }
                     else if (i == 2)
                     {
-                        sb.AppendLine($":third_place:{leaderboard[i]}:third_place:");
+                        sb.AppendLine($":third_place:{lines[i]}:third_place:");
                     }
                     else
                     {
-                        sb.AppendLine($"{i} - {leaderboard[i]}");
+                        sb.AppendLine($"{i} - {lines[i]}");
                     }
                 }
             }
@@ -284,19 +288,19 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
                     if (i == 0)
                     {
-                        sb.AppendLine($":first_place:{leaderboard[i]}:first_place:");
+                        sb.AppendLine($":first_place:{lines[i]}:first_place:");
                     }
                     else if (i == 1)
                     {
-                        sb.AppendLine($":second_place:{leaderboard[i]}:second_place:");
+                        sb.AppendLine($":second_place:{lines[i]}:second_place:");
                     }
                     else if (i == 2)
                     {
-                        sb.AppendLine($":third_place:{leaderboard[i]}:third_place:");
+                        sb.AppendLine($":third_place:{lines[i]}:third_place:");
                     }
                     else
                     {
-                        sb.AppendLine($"{i} - {leaderboard[i]}");
+                        sb.AppendLine($"{i} - {lines[i]}");
                     }
                 }
             }
