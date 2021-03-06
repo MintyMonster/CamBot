@@ -252,12 +252,52 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
                 .OrderByDescending(x => int.Parse(x.points))
-                .Select(x => $"**{x.playerUsername}** - {x.points}"));
+                .Select(x => $"**{x.points}** - {x.playerUsername}"));
 
-            
+            string[] lines = leaderboard.Split("\n", StringSplitOptions.None);
 
-            sb.AppendLine($"{leaderboard}");
-            
+            if(lines.Length <= 15)
+            {
+                for(var i = 0; i <= lines.Length - 1; i++)
+                {
+                    switch (i)
+                    {
+                        case 1:
+                            sb.AppendLine($":first_place:{lines[i]}:first_place:");
+                            break;
+                        case 2:
+                            sb.AppendLine($":second_place:{lines[i]}:second_place:");
+                            break;
+                        case 3:
+                            sb.AppendLine($":third_place:{lines[i]}:third_place:");
+                            break;
+                        default:
+                            sb.AppendLine($"{i} - {lines[i]}");
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                for(var i = 0; i <= 15; i++)
+                {
+                    switch (i)
+                    {
+                        case 1:
+                            sb.AppendLine($":first_place:{lines[i]}:first_place:");
+                            break;
+                        case 2:
+                            sb.AppendLine($":second_place:{lines[i]}:second_place:");
+                            break;
+                        case 3:
+                            sb.AppendLine($":third_place:{lines[i]}:third_place:");
+                            break;
+                        default:
+                            sb.AppendLine($"{i} - {lines[i]}");
+                            break;
+                    }
+                }
+            }
 
             embed.Title = ":trophy: Points leaderboard! :trophy:";
             embed.Description = sb.ToString();
@@ -1016,7 +1056,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             
-            Console.WriteLine($"{user.Mention} => fox");
+            Console.WriteLine($"{user.Username} => fox");
         }
 
         [Command("dog")]
