@@ -152,7 +152,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             sb.AppendLine($"\n__**Points commands:**__");
             sb.AppendLine($"-**points** -> Get your current points");
-            sb.AppendLine($"-**leaderboard** -> Coming soon!!!");
+            sb.AppendLine($"-**leaderboard** -> See the top users!");
 
             sb.AppendLine($"\n__**Commands:**__");
             sb.AppendLine("-**dadjoke** -> Gives a random Dad joke! :joy:");
@@ -235,7 +235,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             embed.Title = $"{user.Username}'s points!";
-            embed.Description = $"[{user.Mention}]\n\nYou have earnt **{points}** points!\nTo earn points, simply use commands!\nThese points are **global**, so they count across all servers.\nLeaderboard coming soon!";
+            embed.Description = $"[{user.Mention}]\n\nYou have earnt **{points}** points!\nTo earn points, simply use commands!\nThese points are **global**, so they count across all servers.\nSee the top users with **leaderboard**!";
             embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
@@ -248,13 +248,14 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var embed = new EmbedBuilder();
             var sb = new StringBuilder();
             var userId = Context.User.Id;
-            var user = Context.User.Username;
+            var user = Context.User;
 
             var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
                 .OrderByDescending(x => int.Parse(x.points))
-                .Select(x => $"**{x.points}** - {x.playerUsername}"));
+                .Select(x => $"**{x.playerUsername}** - {x.points}"));
 
             string[] lines = leaderboard.Split("\n", StringSplitOptions.None);
+            sb.AppendLine($"[{user.Mention}]\n");
 
             if(lines.Length <= 15)
             {
@@ -272,7 +273,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                             sb.AppendLine($":third_place:{lines[i]}:third_place:");
                             break;
                         default:
-                            sb.AppendLine($"{i} - {lines[i]}");
+                            sb.AppendLine($"{i -1} - {lines[i]}");
                             break;
                     }
                 }
@@ -304,7 +305,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user} => leaderboard");
+            Console.WriteLine($"{user.Username} => leaderboard");
         }
 
 
@@ -321,6 +322,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             sb.AppendLine($"**+ changeprefix** -> Change my prefix!");
             sb.AppendLine($"**+ updates** -> See latest updates for the bot");
             sb.AppendLine($"**+ points** -> See your points");
+            sb.AppendLine($"**+ leaderboard** -> See the top users!");
             sb.AppendLine();
             sb.AppendLine($"**- donate**");
             sb.AppendLine($"**- changelog** -> now **updates**");
