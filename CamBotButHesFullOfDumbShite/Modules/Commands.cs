@@ -242,7 +242,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             Console.WriteLine($"{user} => points");
         }
 
-        /*[Command("leaderboard")]
+        [Command("leaderboard")]
         public async Task getPointsLeaderboard()
         {
             var embed = new EmbedBuilder();
@@ -250,7 +250,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var userId = Context.User.Id;
             var user = Context.User.Username;
 
-            var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
+            /*var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
                 .OrderByDescending(x => x.points)
                 .Select(x => $"**{x.playerUsername}** - {x.points}"));
 
@@ -311,8 +311,13 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user} => leaderboard");
-        }*/
+            Console.WriteLine($"{user} => leaderboard");*/
+
+            embed.Title = ":trophy: Coming soon! :trophy:";
+            embed.Color = new Color(124, 108, 187);
+
+            await ReplyAsync(null, false, embed.Build());
+        }
 
 
         [Command("updates")]
