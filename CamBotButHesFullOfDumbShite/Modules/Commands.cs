@@ -251,7 +251,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var user = Context.User.Username;
 
             var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
-                .OrderByDescending(x => x.points)
+                .OrderBy(x => x.points)
                 .Select(x => $"**{x.playerUsername}** - {x.points}"));
 
             string[] lines = leaderboard.Split("\n", StringSplitOptions.None);
