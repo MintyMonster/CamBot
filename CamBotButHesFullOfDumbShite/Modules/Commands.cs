@@ -152,7 +152,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             sb.AppendLine($"\n__**Points commands:**__");
             sb.AppendLine($"-**points** -> Get your current points");
-            sb.AppendLine($"-**leaderboard** -> See the top 15 on the points leaderboard!");
+            sb.AppendLine($"-**leaderboard** -> Coming soon!!!");
 
             sb.AppendLine($"\n__**Commands:**__");
             sb.AppendLine("-**dadjoke** -> Gives a random Dad joke! :joy:");
@@ -235,14 +235,14 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             embed.Title = $"{user}'s points!";
-            embed.Description = $"You have earnt **{points}** points!\nTo earn points, simply use commands!\nThese points are **global**, so they count across all servers.\nUse the **leaderboard** command to see who's on top!";
+            embed.Description = $"You have earnt **{points}** points!\nTo earn points, simply use commands!\nThese points are **global**, so they count across all servers.\nLeaderboard coming soon!";
             embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user} => points");
         }
 
-        [Command("leaderboard")]
+        /*[Command("leaderboard")]
         public async Task getPointsLeaderboard()
         {
             var embed = new EmbedBuilder();
@@ -251,7 +251,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var user = Context.User.Username;
 
             var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
-                .OrderBy(x => x.points)
+                .OrderByDescending(x => x.points)
                 .Select(x => $"**{x.playerUsername}** - {x.points}"));
 
             string[] lines = leaderboard.Split("\n", StringSplitOptions.None);
@@ -312,7 +312,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user} => leaderboard");
-        }
+        }*/
 
 
         [Command("updates")]
