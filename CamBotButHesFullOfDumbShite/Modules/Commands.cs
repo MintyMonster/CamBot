@@ -256,9 +256,9 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 .OrderByDescending(x => x.points)
                 .Select(x => $"**{x.playerUsername}** - {x.points}").ToList());
 
-            if(leaderboard.Length <= 15)
+            if(leaderboard.Count() <= 15)
             {
-                for (var i = 1; i <= leaderboard.Length; i++)
+                for (var i = 1; i <= leaderboard.Count(); i++)
                 {
 
                     if (i == 1)
