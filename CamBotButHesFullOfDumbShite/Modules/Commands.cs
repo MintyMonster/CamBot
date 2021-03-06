@@ -258,7 +258,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             if(leaderboard.Count() <= 15)
             {
-                for (var i = 1; i <= leaderboard.Count(); i++)
+                for (var i = 0; i <= leaderboard.Count(); i++)
                 {
 
                     if (i == 1)
@@ -281,7 +281,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
             else
             {
-                for (var i = 1; i <= 15; i++)
+                for (var i = 0; i <= 15; i++)
                 {
 
                     if (i == 1)
