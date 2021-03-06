@@ -254,22 +254,22 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
                 .OrderByDescending(x => x.points)
-                .Select(x => $"**{x.playerUsername}** - {x.points}").ToArray());
+                .Select(x => $"**{x.playerUsername}** - {x.points}").ToList());
 
             if(leaderboard.Count() <= 15)
             {
-                for (var i = 0; i <= leaderboard.Count(); i++)
+                for (var i = 0; i <= leaderboard.Count() - 1; i++)
                 {
 
-                    if (i == 1)
+                    if (i == 0)
                     {
                         sb.AppendLine($":first_place:{leaderboard[i]}:first_place:");
                     }
-                    else if (i == 2)
+                    else if (i == 1)
                     {
                         sb.AppendLine($":second_place:{leaderboard[i]}:second_place:");
                     }
-                    else if (i == 3)
+                    else if (i == 2)
                     {
                         sb.AppendLine($":third_place:{leaderboard[i]}:third_place:");
                     }
@@ -284,15 +284,15 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 for (var i = 0; i <= 15; i++)
                 {
 
-                    if (i == 1)
+                    if (i == 0)
                     {
                         sb.AppendLine($":first_place:{leaderboard[i]}:first_place:");
                     }
-                    else if (i == 2)
+                    else if (i == 1)
                     {
                         sb.AppendLine($":second_place:{leaderboard[i]}:second_place:");
                     }
-                    else if (i == 3)
+                    else if (i == 2)
                     {
                         sb.AppendLine($":third_place:{leaderboard[i]}:third_place:");
                     }
