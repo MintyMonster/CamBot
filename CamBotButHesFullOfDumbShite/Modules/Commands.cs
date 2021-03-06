@@ -250,60 +250,11 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var userId = Context.User.Id;
             var user = Context.User.Username;
 
-            /*var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
+            var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
                 .OrderByDescending(x => x.points)
                 .Select(x => $"**{x.playerUsername}** - {x.points}"));
 
-            string[] lines = leaderboard.Split("\n", StringSplitOptions.None);
-
-            
-
-            if(lines.Count() <= 15)
-            {
-                for (var i = 0; i <= lines.Count() - 1; i++)
-                {
-
-                    if (i == 0)
-                    {
-                        sb.AppendLine($":first_place:{lines[i]}:first_place:");
-                    }
-                    else if (i == 1)
-                    {
-                        sb.AppendLine($":second_place:{lines[i]}:second_place:");
-                    }
-                    else if (i == 2)
-                    {
-                        sb.AppendLine($":third_place:{lines[i]}:third_place:");
-                    }
-                    else
-                    {
-                        sb.AppendLine($"{i} - {lines[i]}");
-                    }
-                }
-            }
-            else
-            {
-                for (var i = 0; i <= 15; i++)
-                {
-
-                    if (i == 0)
-                    {
-                        sb.AppendLine($":first_place:{lines[i]}:first_place:");
-                    }
-                    else if (i == 1)
-                    {
-                        sb.AppendLine($":second_place:{lines[i]}:second_place:");
-                    }
-                    else if (i == 2)
-                    {
-                        sb.AppendLine($":third_place:{lines[i]}:third_place:");
-                    }
-                    else
-                    {
-                        sb.AppendLine($"{i} - {lines[i]}");
-                    }
-                }
-            }
+            sb.AppendLine($"{leaderboard}");
             
 
             embed.Title = ":trophy: Points leaderboard! :trophy:";
@@ -311,12 +262,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
-            Console.WriteLine($"{user} => leaderboard");*/
-
-            embed.Title = ":trophy: Coming soon! :trophy:";
-            embed.Color = new Color(124, 108, 187);
-
-            await ReplyAsync(null, false, embed.Build());
+            Console.WriteLine($"{user} => leaderboard");
         }
 
 
@@ -328,6 +274,8 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var user = Context.User;
 
             sb.AppendLine($"__**Updates:**__\n");
+            sb.AppendLine($"+ = Added");
+            sb.AppendLine($"- = Removed\n");
             sb.AppendLine($"**+ changeprefix** -> Change my prefix!");
             sb.AppendLine($"**+ updates** -> See latest updates for the bot");
             sb.AppendLine($"**+ points** -> See your points");
