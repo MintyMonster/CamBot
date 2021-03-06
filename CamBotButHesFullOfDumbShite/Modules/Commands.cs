@@ -254,7 +254,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             var leaderboard = string.Join("\n", _pldb.playerLevelsModel.AsEnumerable()
                 .OrderByDescending(x => x.points)
-                .Select(x => $"**{x.playerUsername}** - {x.points}").ToList());
+                .Select(x => $"**{x.playerUsername}** - {x.points}").ToArray());
 
             if(leaderboard.Count() <= 15)
             {
