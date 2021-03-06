@@ -258,9 +258,8 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             if(leaderboard.Length <= 15)
             {
-                for (var i = 0; i <= leaderboard.Length; i++)
+                for (var i = 1; i <= leaderboard.Length; i++)
                 {
-                    sb.AppendLine($"{leaderboard[i]}");
 
                     if (i == 1)
                     {
@@ -282,9 +281,8 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
             else
             {
-                for (var i = 0; i <= 15; i++)
+                for (var i = 1; i <= 15; i++)
                 {
-                    sb.AppendLine($"{leaderboard[i]}");
 
                     if (i == 1)
                     {
