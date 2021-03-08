@@ -1078,9 +1078,17 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
                     if (!string.IsNullOrEmpty(dogurl) || !dogurl.Contains(".mp4"))
                     {
-                        embed.ImageUrl = dogurl;
-                        embed.Color = new Color(r, g, b);
-                        await ReplyAsync($"Fluffball delivery for: {user.Mention}", false, embed.Build());
+                        if (!(dogurl.Length < 15))
+                        {
+                            embed.ImageUrl = dogurl;
+                            embed.Color = new Color(r, g, b);
+                            await ReplyAsync($"Fluffball delivery for: {user.Mention}", false, embed.Build());
+                        }
+                        else
+                        {
+                            await ReplyAsync($"Ah... I seem to be missing the key ingredient. A doggo. Excuse me Sir Doggie, where art thou?");
+                        }
+                        
                     }
                     else
                     {
