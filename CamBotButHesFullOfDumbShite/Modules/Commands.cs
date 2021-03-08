@@ -991,7 +991,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 {
                     CatsRoot cats = JsonConvert.DeserializeObject<CatsRoot>(await response.Content.ReadAsStringAsync());
                     caturl = $"{cats.file}";
-                    if (!string.IsNullOrEmpty(caturl) || caturl.Contains(".mp4"))
+                    if (!string.IsNullOrEmpty(caturl) || !caturl.Contains(".mp4"))
                     {
                         embed.ImageUrl = caturl;
                         embed.Color = new Color(r, g, b);
@@ -1033,7 +1033,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     FoxRoot fox = JsonConvert.DeserializeObject<FoxRoot>(await response.Content.ReadAsStringAsync());
                     foxurl = $"{fox.image}";
 
-                    if (!string.IsNullOrEmpty(foxurl) || foxurl.Contains(".mp4"))
+                    if (!string.IsNullOrEmpty(foxurl) || !foxurl.Contains(".mp4"))
                     {
                         embed.ImageUrl = foxurl;
                         embed.Color = new Color(r, g, b);
@@ -1076,7 +1076,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     DogRoot dog = JsonConvert.DeserializeObject<DogRoot>(await response.Content.ReadAsStringAsync());
                     dogurl = dog.url;
 
-                    if (!string.IsNullOrEmpty(dogurl) || dogurl.Contains(".mp4"))
+                    if (!string.IsNullOrEmpty(dogurl) || !dogurl.Contains(".mp4"))
                     {
                         embed.ImageUrl = dogurl;
                         embed.Color = new Color(r, g, b);
