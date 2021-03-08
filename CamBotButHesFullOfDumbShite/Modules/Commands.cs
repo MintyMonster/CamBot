@@ -273,7 +273,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                             sb.AppendLine($":third_place: {lines[i]}");
                             break;
                         default:
-                            sb.AppendLine($"**{i + 1}**) {lines[i]}");
+                            sb.AppendLine($"**{i + 1}**th) {lines[i]}");
                             break;
                     }
                 }
@@ -294,7 +294,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                             sb.AppendLine($":third_place: {lines[i]}");
                             break;
                         default:
-                            sb.AppendLine($"**{i + 1}**) {lines[i]}");
+                            sb.AppendLine($"**{i + 1}**th) {lines[i]}");
                             break;
                     }
                 }
@@ -935,11 +935,12 @@ namespace CamBotButHesFullOfDumbShite.Modules
                         var maxF = (owm.main.temp_max * 1.8) + 32;
                         var minF = (owm.main.temp_min * 1.8) + 32;
                         sbTitle.AppendLine($"The current weather in {owm.name}:");
+                        sb.AppendLine($"**Time in {query}:** {DateTime.Now.AddSeconds(owm.timezone).ToString("dd/MM/yy - HH:mm")}");
                         sb.AppendLine($"**Description:** {owm.weather[0].description}\n");
-                        sb.AppendLine($"**Temperature:** {owm.main.temp}°C ({tempF}°F)\n");
-                        sb.AppendLine($"**Feels like:** {owm.main.feels_like}°C ({feelsF}°F)\n");
-                        sb.AppendLine($"**Max temp:** {owm.main.temp_max}°C ({maxF}°F)\n");
-                        sb.AppendLine($"**Min temp:** {owm.main.temp_min}°C ({minF}°F)\n");
+                        sb.AppendLine($"**Temperature:** {owm.main.temp}°C ({tempF.ToString("N1")}°F)\n");
+                        sb.AppendLine($"**Feels like:** {owm.main.feels_like}°C ({feelsF.ToString("N1")}°F)\n");
+                        sb.AppendLine($"**Max temp:** {owm.main.temp_max}°C ({maxF.ToString("N1")}°F)\n");
+                        sb.AppendLine($"**Min temp:** {owm.main.temp_min}°C ({minF.ToString("N1")}°F)\n");
                         sb.AppendLine($"**Humidity:** {owm.main.humidity}\n");
                         sb.AppendLine($"**Wind Speed:** {owm.wind.speed}mph\n");
                         sb.AppendLine($"**Wind direction:** {owm.wind.deg}°\n");
@@ -990,20 +991,16 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 {
                     CatsRoot cats = JsonConvert.DeserializeObject<CatsRoot>(await response.Content.ReadAsStringAsync());
                     caturl = $"{cats.file}";
-                    if (!string.IsNullOrEmpty(caturl))
+                    if (!string.IsNullOrEmpty(caturl) || caturl.Contains(".mp4"))
                     {
                         embed.ImageUrl = caturl;
                         embed.Color = new Color(r, g, b);
+                        await ReplyAsync($"{user.Mention} wants to see cuteness!", false, embed.Build());
                     }
                     else
                     {
-                        embed.Description = "I seem to be missing the key ingredient... A cat :thinking: :smiling_face_with_tear:";
-                        embed.Color = new Color(r, g, b);
-                    }
-
-                    
-
-                    await ReplyAsync($"{user.Mention} wants to see cuteness!", false, embed.Build());
+                        await Context.Channel.SendMessageAsync($"{user.Mention} wants to see cuteness!\n{caturl}");
+                    } 
                 }
                 else
                 {
@@ -1035,20 +1032,17 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 {
                     FoxRoot fox = JsonConvert.DeserializeObject<FoxRoot>(await response.Content.ReadAsStringAsync());
                     foxurl = $"{fox.image}";
-                    if (!string.IsNullOrEmpty(foxurl))
+
+                    if (!string.IsNullOrEmpty(foxurl) || foxurl.Contains(".mp4"))
                     {
                         embed.ImageUrl = foxurl;
                         embed.Color = new Color(r, g, b);
+                        await ReplyAsync($"A cuddly fox for {user.Mention}", false, embed.Build());
                     }
                     else
                     {
-                        embed.Description = "Well, that was anti-climatic. Where's my fox!? :cry:";
-                        embed.Color = new Color(r, g, b);
-                    }
-
-                    
-
-                    await ReplyAsync($"A cuddly fox for {user.Mention}", false, embed.Build());
+                        await Context.Channel.SendMessageAsync($"A cuddly fox for {user.Mention}\n{foxurl}");
+                    } 
                 }
                 else
                 {
@@ -1080,22 +1074,24 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 if (response.IsSuccessStatusCode)
                 {
                     DogRoot dog = JsonConvert.DeserializeObject<DogRoot>(await response.Content.ReadAsStringAsync());
-                    dogurl = $"{dog.url}";
+                    dogurl = dog.url;
 
-                    if (!string.IsNullOrEmpty(dogurl))
+                    if (!string.IsNullOrEmpty(dogurl) || dogurl.Contains(".mp4"))
                     {
                         embed.ImageUrl = dogurl;
                         embed.Color = new Color(r, g, b);
+                        await ReplyAsync($"Fluffball delivery for: {user.Mention}", false, embed.Build());
                     }
                     else
                     {
-                        embed.Description = "I seem to be lacking a dog. Where is my dog? Where art thou, Señor Doggie?";
-                        embed.Color = new Color(r, g, b);
+                        //embed.Description = "I seem to be lacking a dog. Where is my dog? Where art thou, Señor Doggie?";
+                        //embed.Color = new Color(r, g, b);
+                        await Context.Channel.SendMessageAsync($"Fluffball delivery for: {user.Mention}\n{dogurl}");
                     }
 
                     
 
-                    await ReplyAsync($"Fluffball delivery for: {user.Mention}", false, embed.Build());
+                    
                 }
                 else
                 {
@@ -1108,7 +1104,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             Console.WriteLine($"{user.Username} => dog");
         }
 
-        [Command("cocktail")]
+        [Command("cocktail", RunMode = RunMode.Async)]
         [Alias("drinks")]
         public async Task getCocktailsAsync() // look through categories
         {
@@ -1172,7 +1168,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             Console.WriteLine($"{user.Username} => cocktail {sbTitle}");
         }
 
-        [Command("prices")]
+        [Command("prices", RunMode = RunMode.Async)]
         [Alias("coins", "coin")]
         public async Task getFirstTenCoins() // Query the coin by name
         {
@@ -1219,7 +1215,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             Console.WriteLine($"{user.Username} => prices");
         }
 
-        [Command("recipe")]
+        [Command("recipe", RunMode = RunMode.Async)]
         [Alias("meals", "meal")]
         public async Task getRandomMealRecipe() // add the ability to query locations/food etc
         {
@@ -1395,7 +1391,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             Console.WriteLine($"{user.Username} => bored");
         }
 
-        [Command("plants")] // Search through google images
+        [Command("plants", RunMode = RunMode.Async)] // Search through google images
         [Alias("plant")]
         public async Task getPlantsAsync([Remainder]string query = null)
         {
