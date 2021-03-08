@@ -935,7 +935,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                         var maxF = (owm.main.temp_max * 1.8) + 32;
                         var minF = (owm.main.temp_min * 1.8) + 32;
                         sbTitle.AppendLine($"The current weather in {owm.name}:");
-                        sb.AppendLine($"**Time in {query}:** {DateTime.Now.AddSeconds(owm.timezone).ToString("dd/MM/yy - HH:mm")}");
+                        sb.AppendLine($"**Time in {query}:** {DateTime.Now.AddSeconds(owm.timezone).ToString("dd/MM/yy - HH:mm")}\n");
                         sb.AppendLine($"**Description:** {owm.weather[0].description}\n");
                         sb.AppendLine($"**Temperature:** {owm.main.temp}°C ({tempF.ToString("N1")}°F)\n");
                         sb.AppendLine($"**Feels like:** {owm.main.feels_like}°C ({feelsF.ToString("N1")}°F)\n");
@@ -1087,11 +1087,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                         //embed.Description = "I seem to be lacking a dog. Where is my dog? Where art thou, Señor Doggie?";
                         //embed.Color = new Color(r, g, b);
                         await Context.Channel.SendMessageAsync($"Fluffball delivery for: {user.Mention}\n{dogurl}");
-                    }
-
-                    
-
-                    
+                    }   
                 }
                 else
                 {
