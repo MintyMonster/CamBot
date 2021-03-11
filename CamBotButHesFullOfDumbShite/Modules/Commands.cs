@@ -37,6 +37,8 @@ using CamBotButHesFullOfDumbShite.BoredApi;
 using CamBotButHesFullOfDumbShite.TrefleApi;
 using CamBotButHesFullOfDumbShite.Database;
 using CamBotButHesFullOfDumbShite.PlayerLevelsDatabase;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace CamBotButHesFullOfDumbShite.Modules
 {
@@ -125,6 +127,15 @@ namespace CamBotButHesFullOfDumbShite.Modules
                     throw new Exception(response.ReasonPhrase);
                 }
             }
+        }
+        
+        [Command("restart")]
+        public async Task getRestart()
+        {
+            var restartPath = Assembly.GetExecutingAssembly().Location;
+
+            Process.Start(restartPath);
+            Environment.Exit(0);
         }
 
         [Command("help")]
@@ -257,46 +268,22 @@ namespace CamBotButHesFullOfDumbShite.Modules
             string[] lines = leaderboard.Split("\n", StringSplitOptions.None);
             sb.AppendLine($"[{user.Mention}]\n");
 
-            if(lines.Length <= 15)
+            for (var i = 0; i <= 14; i++)
             {
-                for(var i = 0; i <= lines.Length - 1; i++)
+                switch (i)
                 {
-                    switch (i)
-                    {
-                        case 0:
-                            sb.AppendLine($":first_place: {lines[i]}");
-                            break;
-                        case 1:
-                            sb.AppendLine($":second_place: {lines[i]}");
-                            break;
-                        case 2:
-                            sb.AppendLine($":third_place: {lines[i]}");
-                            break;
-                        default:
-                            sb.AppendLine($"**{i + 1}**th) {lines[i]}");
-                            break;
-                    }
-                }
-            }
-            else
-            {
-                for(var i = 0; i <= 15; i++)
-                {
-                    switch (i)
-                    {
-                        case 0:
-                            sb.AppendLine($":first_place: {lines[i]}");
-                            break;
-                        case 1:
-                            sb.AppendLine($":second_place: {lines[i]}");
-                            break;
-                        case 2:
-                            sb.AppendLine($":third_place: {lines[i]}");
-                            break;
-                        default:
-                            sb.AppendLine($"**{i + 1}**th) {lines[i]}");
-                            break;
-                    }
+                    case 0:
+                        sb.AppendLine($":first_place: {lines[i]}");
+                        break;
+                    case 1:
+                        sb.AppendLine($":second_place: {lines[i]}");
+                        break;
+                    case 2:
+                        sb.AppendLine($":third_place: {lines[i]}");
+                        break;
+                    default:
+                        sb.AppendLine($"**{i + 1}**th) {lines[i]}");
+                        break;
                 }
             }
 
