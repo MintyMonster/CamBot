@@ -128,15 +128,6 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 }
             }
         }
-        
-        [Command("restart")]
-        public async Task getRestart()
-        {
-            var restartPath = Assembly.GetExecutingAssembly().Location;
-
-            Process.Start(restartPath);
-            Environment.Exit(0);
-        }
 
         [Command("help")]
         [Alias("h")]
