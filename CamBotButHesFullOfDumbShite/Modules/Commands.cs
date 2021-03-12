@@ -397,7 +397,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user} => test");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> test");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user} -> test");
         }
 
         [Command("APOD")]
@@ -507,7 +507,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync($"{Context.User.Mention}", false, embed.Build());
             Console.WriteLine($"{user} => apod");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> apod");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user} -> apod");
         }
 
         [Command("spacedefinition")]
@@ -554,7 +554,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user} => sdef");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> sdef");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user} -> sdef");
         }
 
         [Command("Wiki")]
@@ -589,7 +589,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build()); 
             Console.WriteLine($"{user} => wiki");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> wiki");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user} -> wiki");
         }
 
         [Command("DadJoke")]
@@ -608,7 +608,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(255, 255, 0);
 
             await ReplyAsync(null, false, embed.Build());
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> dadjoke");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {Context.User.Username} -> dadjoke");
             Console.WriteLine($"{Context.User.Username} -> dadjoke");
         }
 
