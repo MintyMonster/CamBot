@@ -117,6 +117,7 @@ namespace CamBotButHesFullOfDumbShite.Services
             if (!command.IsSpecified)
             {
                 Console.WriteLine($"{context.User.Username} => Command failed to execute");
+                await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[FAILED]{DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {context.User.Username} -> {command.ToString()}");
                 var cross = new Emoji("\u274C");
                 await context.Message.AddReactionAsync(cross);
                 return;
@@ -125,6 +126,7 @@ namespace CamBotButHesFullOfDumbShite.Services
             if (result.IsSuccess)
             {
                 Console.WriteLine($"{context.User.Username} => Executed a command");
+                await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {context.User.Username} -> {command.ToString()}");
                 var checkMark = new Emoji("\u2705");
                 await context.Message.AddReactionAsync(checkMark);
                 return;
