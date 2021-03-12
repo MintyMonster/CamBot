@@ -193,7 +193,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             await Context.User.SendMessageAsync(null, false, embed.Build());
             await ReplyAsync($"{user.Mention} I've sent you a private message!");
             Console.Write($"{user} => help"); // log to console
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> help");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> help");
         }
 
         [Command("changeprefix")]
@@ -219,7 +219,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} => changeprefix");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> changeprefix");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> changeprefix");
         }
 
         [Command("points")]
@@ -244,7 +244,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user} => points");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> points");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> points");
         }
 
         [Command("leaderboard")]
@@ -287,7 +287,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} => leaderboard");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> leaderboard");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> leaderboard");
         }
 
 
@@ -314,7 +314,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} => updates");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> updates");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> updates");
         }
 
         [Command("contact")]
@@ -336,7 +336,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(124, 108, 187);
 
             await ReplyAsync(null, false, embed.Build());
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {Context.User.Username} -> contact");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {Context.User.Username} -> contact");
         }
 
         [Command("addtoserver")]
@@ -355,7 +355,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} => add");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> add");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> add");
         }
 
 
@@ -381,7 +381,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} => about");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> about");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> about");
         }
 
 
@@ -397,7 +397,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user} => test");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user} -> test");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user} -> test");
         }
 
         [Command("APOD")]
@@ -507,7 +507,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync($"{Context.User.Mention}", false, embed.Build());
             Console.WriteLine($"{user} => apod");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user} -> apod");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user} -> apod");
         }
 
         [Command("spacedefinition")]
@@ -554,7 +554,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user} => sdef");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user} -> sdef");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user} -> sdef");
         }
 
         [Command("Wiki")]
@@ -589,7 +589,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build()); 
             Console.WriteLine($"{user} => wiki");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user} -> wiki");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user} -> wiki");
         }
 
         [Command("DadJoke")]
@@ -608,7 +608,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Color = new Color(255, 255, 0);
 
             await ReplyAsync(null, false, embed.Build());
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {Context.User.Username} -> dadjoke");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {Context.User.Username} -> dadjoke");
             Console.WriteLine($"{Context.User.Username} -> dadjoke");
         }
 
@@ -631,7 +631,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
             Console.WriteLine($"{user.Username} => ISS");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> ISS");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> ISS");
         }
 
         [Command("Mars", RunMode = RunMode.Async)]
@@ -686,7 +686,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             
             Console.WriteLine($"{user.Username} => mars");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> mars");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> mars");
         }
 
         [Command("UBdefine")]
@@ -749,7 +749,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
             
             Console.WriteLine($"{user.Username} => ubdefine");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> ubdefine");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> ubdefine");
         }
 
         [Command("yearfact")]
@@ -811,7 +811,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             Console.WriteLine($"{user.Username} => yearfact");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> yearfact");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> yearfact");
         }
 
         [Command("mathfact")]
@@ -906,7 +906,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             
             Console.WriteLine($"{user.Username} => mathfact");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> mathfact");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> mathfact");
         }
 
         [Command("weather")] // Add easter eggs
@@ -965,7 +965,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             
             Console.WriteLine($"{user.Username} => weather {query}");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> weather {query}");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> weather {query}");
         }
 
         [Command("cat")]
@@ -1008,7 +1008,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
             
             Console.WriteLine($"{user.Username} => cat");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> cat");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> cat");
         }
 
         [Command("fox")]
@@ -1052,7 +1052,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             
             Console.WriteLine($"{user.Username} => fox");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> fox");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> fox");
         }
 
         [Command("dog")]
@@ -1099,7 +1099,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             
             Console.WriteLine($"{user.Username} => dog");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> dog");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> dog");
         }
 
         [Command("cocktail", RunMode = RunMode.Async)]
@@ -1164,7 +1164,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             Console.WriteLine($"{user.Username} => cocktail {sbTitle}");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> cocktail - {sbTitle}");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> cocktail - {sbTitle}");
         }
 
         [Command("prices", RunMode = RunMode.Async)]
@@ -1212,7 +1212,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
 
             Console.WriteLine($"{user.Username} => prices");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> prices");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> prices");
         }
 
         [Command("recipe", RunMode = RunMode.Async)]
@@ -1304,7 +1304,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             
             Console.WriteLine($"{user.Username} => recipe");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> recipe");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> recipe");
         }
 
         [Command("catfact")]
@@ -1346,7 +1346,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             Console.WriteLine($"{user.Username} => catfact");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> catfact");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> catfact");
         }
 
         [Command("bored")]
@@ -1391,7 +1391,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             Console.WriteLine($"{user.Username} => bored");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> bored");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> bored");
         }
 
         [Command("plants", RunMode = RunMode.Async)] // Search through google images
@@ -1513,7 +1513,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             }
 
             Console.WriteLine($"{user.Username} => plants");
-            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {user.Username} -> plants");
+            await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> plants");
         }
     }
 }

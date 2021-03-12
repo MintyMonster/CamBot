@@ -79,7 +79,7 @@ namespace CamBotButHesFullOfDumbShite
         private Task Log(LogMessage msg)
         {
             Console.WriteLine(msg.ToString());
-            _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[LOG] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** {msg.ToString()}");
+            _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[LOG] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {msg.ToString()}");
 
             return Task.CompletedTask;
         }
@@ -87,7 +87,7 @@ namespace CamBotButHesFullOfDumbShite
         private Task ReadyAsync()
         {
             Console.WriteLine($"{DateTime.Now} => CamBot and his shite are now online");
-            _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[ONLINE] {DateTime.Now.ToString("dd/MM/yy | HH/mm")}** Cambot online");
+            _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[ONLINE] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** Cambot online");
 
             return Task.CompletedTask;
         }
