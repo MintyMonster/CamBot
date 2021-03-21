@@ -1542,7 +1542,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
             var sb = new StringBuilder();
             var username = Context.User;
 
-            if (user.Equals(null))
+            if (user == null)
             {
                 sb.AppendLine($"{username.Mention} is sending hugs to all of you!");
             }
