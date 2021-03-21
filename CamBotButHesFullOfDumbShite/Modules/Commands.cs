@@ -1537,7 +1537,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
         }
 
         [Command("hug")]
-        public async Task giveHug(SocketUser user = null)
+        public async Task giveHug(SocketGuildUser user = null)
         {
             var sb = new StringBuilder();
             var username = Context.User;
