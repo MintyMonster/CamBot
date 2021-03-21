@@ -1571,8 +1571,8 @@ namespace CamBotButHesFullOfDumbShite.Modules
             Color color = new Color(124, 108, 187);
 
             sb.AppendLine($"[{Context.User.Mention}]\n");
-            sb.AppendLine($"Latency: {_client.Latency}");
-            sb.AppendLine($"Total guilds: {_client.Guilds.Count()}");
+            sb.AppendLine($"**Latency:** {_client.Latency}ms");
+            sb.AppendLine($"**Total guilds:** {_client.Guilds.Count()}");
 
             var points = await _pldb.playerLevelsModel.ToListAsync();
             int totalPoints = 0;
@@ -1581,7 +1581,7 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 totalPoints += int.Parse(p.points);
             }
 
-            sb.AppendLine($"Commands used: {totalPoints}\n");
+            sb.AppendLine($"**Commands used:** {totalPoints}\n");
             sb.AppendLine($"*If there's more stats you want added, use **$contact** to submit a suggestion!*");
 
             embed.Title = "CamBot stats:";
