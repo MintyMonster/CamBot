@@ -1545,7 +1545,11 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 "https://media.giphy.com/media/lrr9rHuoJOE0w/giphy.gif",
                 "https://media.giphy.com/media/PHZ7v9tfQu0o0/giphy.gif",
                 "https://media.giphy.com/media/IRUb7GTCaPU8E/giphy.gif",
-                "https://media.giphy.com/media/BXrwTdoho6hkQ/giphy.gif"
+                "https://media.giphy.com/media/BXrwTdoho6hkQ/giphy.gif",
+                "https://media.giphy.com/media/ZQN9jsRWp1M76/giphy.gif",
+                "https://media.giphy.com/media/118TCy0aWhHLOM/giphy.gif",
+                "https://media.giphy.com/media/EGauSkKQZuXxS/giphy.gif",
+                "https://media.giphy.com/media/l2QDM9Jnim1YVILXa/giphy.gif"
             };
 
             Random rnd = new Random();
