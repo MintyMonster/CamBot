@@ -47,6 +47,10 @@ namespace CamBotButHesFullOfDumbShite.Modules
     // Research papers 
     // Swear at Cambot, you end up with ANGRY face
     // Games - Word scamble?
+    // Moderation
+    // Music
+    // Games
+    // More apis
 
     public class Commands : ModuleBase // _client.MessageReceived > Add a way for CamBot to respond to dms
     {
@@ -1514,6 +1518,22 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             Console.WriteLine($"{user.Username} => plants");
             await _client.GetGuild(797839905539096637).GetTextChannel(819924744228044800).SendMessageAsync($"**[SUCCESS] {DateTime.Now.ToString("dd/MM/yy | HH:mm")}** {user.Username} -> plants");
+        }
+
+
+        [Command("count")]
+        public async Task getServerCount()
+        {
+            var sb = new StringBuilder();
+            var embed = new EmbedBuilder();
+
+            sb.AppendLine($"Guild count: {_client.Guilds.Count()}");
+
+            embed.Title = "How many servers am I in?";
+            embed.Description = sb.ToString();
+            embed.Color = new Color(0, 255, 0);
+
+            await ReplyAsync(null, false, embed.Build());
         }
     }
 }
