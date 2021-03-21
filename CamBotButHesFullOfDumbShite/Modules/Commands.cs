@@ -1560,14 +1560,14 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             if (user == null)
             {
-                sb.AppendLine($"{username.Mention} is sending hugs to all of you!");
+                sb.AppendLine($"**{username.Mention} is sending hugs to all of you!**");
             }
             else
             {
-                sb.AppendLine($"{username.Mention} is hugging {user.Mention}");
+                sb.AppendLine($"**{username.Mention} is hugging {user.Mention}**");
             }
 
-            embed.Title = sb.ToString();
+            embed.Description = sb.ToString();
             embed.ImageUrl = hugs[index];
             embed.Color = new Color(red, green, blue);
 
