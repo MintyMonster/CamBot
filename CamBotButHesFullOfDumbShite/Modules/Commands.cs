@@ -1535,5 +1535,23 @@ namespace CamBotButHesFullOfDumbShite.Modules
 
             await ReplyAsync(null, false, embed.Build());
         }
+
+        [Command("hug")]
+        public async Task giveHug(SocketUser user = null)
+        {
+            var sb = new StringBuilder();
+            var username = Context.User;
+
+            if (user.Equals(null))
+            {
+                sb.AppendLine($"{username.Mention} is sending hugs to all of you!");
+            }
+            else
+            {
+                sb.AppendLine($"{username.Mention} is hugging {user.Mention}");
+            }
+
+            await Context.Channel.SendMessageAsync(sb.ToString());
+        }
     }
 }
