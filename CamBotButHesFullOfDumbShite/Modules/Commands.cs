@@ -1539,8 +1539,24 @@ namespace CamBotButHesFullOfDumbShite.Modules
         [Command("hug")]
         public async Task giveHug(SocketUser user = null)
         {
+            List<String> hugs = new List<String>
+            {
+                "https://media.giphy.com/media/od5H3PmEG5EVq/giphy.gif",
+                "https://media.giphy.com/media/lrr9rHuoJOE0w/giphy.gif",
+                "https://media.giphy.com/media/PHZ7v9tfQu0o0/giphy.gif",
+                "https://media.giphy.com/media/IRUb7GTCaPU8E/giphy.gif",
+                "https://media.giphy.com/media/BXrwTdoho6hkQ/giphy.gif"
+            };
+
+            Random rnd = new Random();
+            int index = rnd.Next(0, hugs.Count());
+
             var sb = new StringBuilder();
             var username = Context.User;
+            var embed = new EmbedBuilder();
+            var red = rnd.Next(0, 256);
+            var green = rnd.Next(0, 256);
+            var blue = rnd.Next(0, 256);
 
             if (user == null)
             {
@@ -1551,7 +1567,11 @@ namespace CamBotButHesFullOfDumbShite.Modules
                 sb.AppendLine($"{username.Mention} is hugging {user.Mention}");
             }
 
-            await Context.Channel.SendMessageAsync(sb.ToString());
+            embed.Title = sb.ToString();
+            embed.ImageUrl = hugs[index];
+            embed.Color = new Color(red, green, blue);
+
+            await ReplyAsync(null, false, embed.Build());
         }
     }
 }
