@@ -1521,21 +1521,6 @@ namespace CamBotButHesFullOfDumbShite.Modules
         }
 
 
-        [Command("count")]
-        public async Task getServerCount()
-        {
-            var sb = new StringBuilder();
-            var embed = new EmbedBuilder();
-
-            sb.AppendLine($"Guild count: {_client.Guilds.Count()}");
-
-            embed.Title = "How many servers am I in?";
-            embed.Description = sb.ToString();
-            embed.Color = new Color(0, 255, 0);
-
-            await ReplyAsync(null, false, embed.Build());
-        }
-
         [Command("hug")]
         public async Task giveHug(SocketUser user = null)
         {
@@ -1574,6 +1559,34 @@ namespace CamBotButHesFullOfDumbShite.Modules
             embed.Description = sb.ToString();
             embed.ImageUrl = hugs[index];
             embed.Color = new Color(red, green, blue);
+
+            await ReplyAsync(null, false, embed.Build());
+        }
+
+        [Command("stats")]
+        public async Task getBotStats()
+        {
+            var sb = new StringBuilder();
+            var embed = new EmbedBuilder();
+            Color color = new Color(124, 108, 187);
+
+            sb.AppendLine($"[{Context.User.Mention}]\n");
+            sb.AppendLine($"Latency: {_client.Latency}");
+            sb.AppendLine($"Total guilds: {_client.Guilds.Count()}");
+
+            var points = await _pldb.playerLevelsModel.ToListAsync();
+            int totalPoints = 0;
+            foreach(var p in points)
+            {
+                totalPoints += int.Parse(p.points);
+            }
+
+            sb.AppendLine($"Commands used: {totalPoints}\n");
+            sb.AppendLine($"*If there's more stats you want added, use **$contact** to submit a suggestion!*");
+
+            embed.Title = "CamBot stats:";
+            embed.Description = sb.ToString();
+            embed.Color = color;
 
             await ReplyAsync(null, false, embed.Build());
         }
